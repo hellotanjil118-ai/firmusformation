@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteShell, PageHero } from "@/components/SiteShell";
 import { useState } from "react";
 import { z } from "zod";
-import { Mail, MessageCircle, Phone, MapPin, Send, CheckCircle2 } from "lucide-react";
+import { Mail, MessageCircle, Phone, MapPin, Send, CheckCircle2, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
