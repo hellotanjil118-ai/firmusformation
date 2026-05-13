@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteShell, PageHero } from "@/components/SiteShell";
 import { useState } from "react";
 import { z } from "zod";
-import { Mail, MessageCircle, Phone, MapPin, Send, CheckCircle2 } from "lucide-react";
+import { Mail, MessageCircle, Phone, MapPin, Send, CheckCircle2, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -27,9 +28,12 @@ const schema = z.object({
 function Contact() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmitError(null);
     const fd = new FormData(e.currentTarget);
     const data = Object.fromEntries(fd) as Record<string, string>;
     const parsed = schema.safeParse(data);
@@ -40,6 +44,19 @@ function Contact() {
       return;
     }
     setErrors({});
+    setSubmitting(true);
+    const { error } = await supabase.from("leads").insert({
+      name: parsed.data.name,
+      email: parsed.data.email,
+      phone: parsed.data.phone || null,
+      service: parsed.data.service,
+      message: parsed.data.message,
+    });
+    setSubmitting(false);
+    if (error) {
+      setSubmitError("Could not send your message. Please try again or email us directly.");
+      return;
+    }
     setSent(true);
   };
 
@@ -114,11 +131,13 @@ function Contact() {
                   />
                   {errors.message && <p className="mt-1 text-xs text-destructive">{errors.message}</p>}
                 </div>
+                {submitError && <p className="text-sm text-destructive">{submitError}</p>}
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 rounded-md bg-gradient-gold px-6 py-3 text-sm font-semibold text-gold-foreground shadow-gold transition-transform hover:scale-[1.02]"
+                  disabled={submitting}
+                  className="inline-flex items-center gap-2 rounded-md bg-gradient-gold px-6 py-3 text-sm font-semibold text-gold-foreground shadow-gold transition-transform hover:scale-[1.02] disabled:opacity-60"
                 >
-                  Send Message <Send size={16} />
+                  {submitting ? <>Sending <Loader2 size={16} className="animate-spin" /></> : <>Send Message <Send size={16} /></>}
                 </button>
               </form>
             )}
