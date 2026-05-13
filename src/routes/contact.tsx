@@ -131,11 +131,13 @@ function Contact() {
                   />
                   {errors.message && <p className="mt-1 text-xs text-destructive">{errors.message}</p>}
                 </div>
+                {submitError && <p className="text-sm text-destructive">{submitError}</p>}
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 rounded-md bg-gradient-gold px-6 py-3 text-sm font-semibold text-gold-foreground shadow-gold transition-transform hover:scale-[1.02]"
+                  disabled={submitting}
+                  className="inline-flex items-center gap-2 rounded-md bg-gradient-gold px-6 py-3 text-sm font-semibold text-gold-foreground shadow-gold transition-transform hover:scale-[1.02] disabled:opacity-60"
                 >
-                  Send Message <Send size={16} />
+                  {submitting ? <>Sending <Loader2 size={16} className="animate-spin" /></> : <>Send Message <Send size={16} /></>}
                 </button>
               </form>
             )}
