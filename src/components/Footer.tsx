@@ -42,9 +42,9 @@ export function Footer() {
         <div>
           <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-foreground">Contact</h4>
           <ul className="space-y-3 text-sm text-muted-foreground">
-            <li className="flex items-start gap-2"><Mail size={16} className="mt-0.5 text-gold" /> hello@firmusformation.com</li>
-            <li className="flex items-start gap-2"><Phone size={16} className="mt-0.5 text-gold" /> +1 (555) 010-0199</li>
-            <li className="flex items-start gap-2"><MapPin size={16} className="mt-0.5 text-gold" /> Wilmington, Delaware, USA</li>
+            <li className="flex items-start gap-2"><Mail size={16} className="mt-0.5 text-gold" /><span>hello@firmusformation.com</span></li>
+            <li className="flex items-start gap-2"><Phone size={16} className="mt-0.5 text-gold" /><span>+1 (555) 010-0199</span></li>
+            <li className="flex items-start gap-2"><MapPin size={16} className="mt-0.5 text-gold" /><span>Wilmington, Delaware, USA</span></li>
           </ul>
         </div>
       </div>
