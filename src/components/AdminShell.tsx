@@ -30,7 +30,7 @@ export function AdminShell({ children, title }: { children: ReactNode; title: st
 
   return (
     <div className="flex min-h-screen bg-background">
-      <aside className="hidden w-64 shrink-0 border-r border-border bg-[color:var(--surface)] md:block">
+      <aside className="relative hidden w-64 shrink-0 border-r border-border bg-[color:var(--surface)] md:block">
         <div className="border-b border-border p-5">
           <Link to="/admin" className="flex items-center gap-2">
             <div className="grid h-8 w-8 place-items-center rounded-md bg-gradient-primary">
