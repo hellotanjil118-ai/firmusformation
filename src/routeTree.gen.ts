@@ -20,6 +20,7 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesSlugRouteImport } from './routes/services_.$slug'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
   id: '/testimonials',
@@ -76,6 +77,11 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
   path: '/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
+  '/admin/login': typeof AdminLoginRoute
   '/services/$slug': typeof ServicesSlugRoute
 }
 export interface FileRoutesByTo {
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
+  '/admin/login': typeof AdminLoginRoute
   '/services/$slug': typeof ServicesSlugRoute
 }
 export interface FileRoutesById {
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
+  '/admin/login': typeof AdminLoginRoute
   '/services_/$slug': typeof ServicesSlugRoute
 }
 export interface FileRouteTypes {
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/testimonials'
+    | '/admin/login'
     | '/services/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/testimonials'
+    | '/admin/login'
     | '/services/$slug'
   id:
     | '__root__'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/testimonials'
+    | '/admin/login'
     | '/services_/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -170,6 +182,7 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   TermsRoute: typeof TermsRoute
   TestimonialsRoute: typeof TestimonialsRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
 }
 
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -266,8 +286,19 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   TermsRoute: TermsRoute,
   TestimonialsRoute: TestimonialsRoute,
+  AdminLoginRoute: AdminLoginRoute,
   ServicesSlugRoute: ServicesSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
