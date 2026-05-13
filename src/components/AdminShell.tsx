@@ -3,13 +3,13 @@ import { useEffect, type ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Inbox, FileText, MessageSquare, Briefcase, Tag, LogOut, Loader2, ExternalLink } from "lucide-react";
 
-const items = [
+const items: { to: string; label: string; icon: typeof Inbox; exact?: boolean }[] = [
   { to: "/admin", label: "Leads", icon: Inbox, exact: true },
   { to: "/admin/blog", label: "Blog", icon: FileText },
   { to: "/admin/testimonials", label: "Testimonials", icon: MessageSquare },
   { to: "/admin/services", label: "Services", icon: Briefcase },
   { to: "/admin/pricing", label: "Pricing", icon: Tag },
-] as const;
+];
 
 export function AdminShell({ children, title }: { children: ReactNode; title: string }) {
   const { user, isAdmin, loading, signOut } = useAuth();
