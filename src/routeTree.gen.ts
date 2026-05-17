@@ -25,6 +25,7 @@ import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonia
 import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
@@ -107,6 +108,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminClientsRoute = AdminClientsRouteImport.update({
+  id: '/admin/clients',
+  path: '/admin/clients',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBlogRoute = AdminBlogRouteImport.update({
   id: '/admin/blog',
   path: '/admin/blog',
@@ -125,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/clients': typeof AdminClientsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
@@ -144,6 +151,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/clients': typeof AdminClientsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/clients': typeof AdminClientsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
@@ -185,6 +194,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/testimonials'
     | '/admin/blog'
+    | '/admin/clients'
     | '/admin/login'
     | '/admin/pricing'
     | '/admin/services'
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/testimonials'
     | '/admin/blog'
+    | '/admin/clients'
     | '/admin/login'
     | '/admin/pricing'
     | '/admin/services'
@@ -223,6 +234,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/testimonials'
     | '/admin/blog'
+    | '/admin/clients'
     | '/admin/login'
     | '/admin/pricing'
     | '/admin/services'
@@ -243,6 +255,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   TestimonialsRoute: typeof TestimonialsRoute
   AdminBlogRoute: typeof AdminBlogRoute
+  AdminClientsRoute: typeof AdminClientsRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminPricingRoute: typeof AdminPricingRoute
   AdminServicesRoute: typeof AdminServicesRoute
@@ -365,6 +378,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/clients': {
+      id: '/admin/clients'
+      path: '/admin/clients'
+      fullPath: '/admin/clients'
+      preLoaderRoute: typeof AdminClientsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blog': {
       id: '/admin/blog'
       path: '/admin/blog'
@@ -387,6 +407,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   TestimonialsRoute: TestimonialsRoute,
   AdminBlogRoute: AdminBlogRoute,
+  AdminClientsRoute: AdminClientsRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminPricingRoute: AdminPricingRoute,
   AdminServicesRoute: AdminServicesRoute,
@@ -397,3 +418,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
