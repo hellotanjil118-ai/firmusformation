@@ -27,6 +27,7 @@ import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
+import { Route as AdminClientsIdRouteImport } from './routes/admin.clients.$id'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
   id: '/testimonials',
@@ -118,6 +119,11 @@ const AdminBlogRoute = AdminBlogRouteImport.update({
   path: '/admin/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminClientsIdRoute = AdminClientsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminClientsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -131,13 +137,14 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
-  '/admin/clients': typeof AdminClientsRoute
+  '/admin/clients': typeof AdminClientsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/clients/$id': typeof AdminClientsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -151,13 +158,14 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
-  '/admin/clients': typeof AdminClientsRoute
+  '/admin/clients': typeof AdminClientsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/clients/$id': typeof AdminClientsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -172,13 +180,14 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
-  '/admin/clients': typeof AdminClientsRoute
+  '/admin/clients': typeof AdminClientsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/services_/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/clients/$id': typeof AdminClientsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -201,6 +210,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/services/$slug'
     | '/admin/'
+    | '/admin/clients/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -221,6 +231,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/services/$slug'
     | '/admin'
+    | '/admin/clients/$id'
   id:
     | '__root__'
     | '/'
@@ -241,6 +252,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/services_/$slug'
     | '/admin/'
+    | '/admin/clients/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -255,7 +267,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   TestimonialsRoute: typeof TestimonialsRoute
   AdminBlogRoute: typeof AdminBlogRoute
-  AdminClientsRoute: typeof AdminClientsRoute
+  AdminClientsRoute: typeof AdminClientsRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   AdminPricingRoute: typeof AdminPricingRoute
   AdminServicesRoute: typeof AdminServicesRoute
@@ -392,8 +404,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/clients/$id': {
+      id: '/admin/clients/$id'
+      path: '/$id'
+      fullPath: '/admin/clients/$id'
+      preLoaderRoute: typeof AdminClientsIdRouteImport
+      parentRoute: typeof AdminClientsRoute
+    }
   }
 }
+
+interface AdminClientsRouteChildren {
+  AdminClientsIdRoute: typeof AdminClientsIdRoute
+}
+
+const AdminClientsRouteChildren: AdminClientsRouteChildren = {
+  AdminClientsIdRoute: AdminClientsIdRoute,
+}
+
+const AdminClientsRouteWithChildren = AdminClientsRoute._addFileChildren(
+  AdminClientsRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -407,7 +438,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   TestimonialsRoute: TestimonialsRoute,
   AdminBlogRoute: AdminBlogRoute,
-  AdminClientsRoute: AdminClientsRoute,
+  AdminClientsRoute: AdminClientsRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   AdminPricingRoute: AdminPricingRoute,
   AdminServicesRoute: AdminServicesRoute,
