@@ -21,6 +21,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ServicesSlugRouteImport } from './routes/services_.$slug'
+import { Route as PortalLoginRouteImport } from './routes/portal.login'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
 import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
@@ -89,6 +90,11 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
   path: '/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalLoginRoute = PortalLoginRouteImport.update({
+  id: '/portal/login',
+  path: '/portal/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
   id: '/admin/testimonials',
   path: '/admin/testimonials',
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/portal/login': typeof PortalLoginRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByTo {
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/portal/login': typeof PortalLoginRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin': typeof AdminIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
@@ -185,6 +193,7 @@ export interface FileRoutesById {
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/portal/login': typeof PortalLoginRoute
   '/services_/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
@@ -208,6 +217,7 @@ export interface FileRouteTypes {
     | '/admin/pricing'
     | '/admin/services'
     | '/admin/testimonials'
+    | '/portal/login'
     | '/services/$slug'
     | '/admin/'
     | '/admin/clients/$id'
@@ -229,6 +239,7 @@ export interface FileRouteTypes {
     | '/admin/pricing'
     | '/admin/services'
     | '/admin/testimonials'
+    | '/portal/login'
     | '/services/$slug'
     | '/admin'
     | '/admin/clients/$id'
@@ -250,6 +261,7 @@ export interface FileRouteTypes {
     | '/admin/pricing'
     | '/admin/services'
     | '/admin/testimonials'
+    | '/portal/login'
     | '/services_/$slug'
     | '/admin/'
     | '/admin/clients/$id'
@@ -272,6 +284,7 @@ export interface RootRouteChildren {
   AdminPricingRoute: typeof AdminPricingRoute
   AdminServicesRoute: typeof AdminServicesRoute
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
+  PortalLoginRoute: typeof PortalLoginRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -362,6 +375,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/login': {
+      id: '/portal/login'
+      path: '/portal/login'
+      fullPath: '/portal/login'
+      preLoaderRoute: typeof PortalLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/testimonials': {
       id: '/admin/testimonials'
       path: '/admin/testimonials'
@@ -443,6 +463,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminPricingRoute: AdminPricingRoute,
   AdminServicesRoute: AdminServicesRoute,
   AdminTestimonialsRoute: AdminTestimonialsRoute,
+  PortalLoginRoute: PortalLoginRoute,
   ServicesSlugRoute: ServicesSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
