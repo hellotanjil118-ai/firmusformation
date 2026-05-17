@@ -1,10 +1,11 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { Inbox, FileText, MessageSquare, Briefcase, Tag, LogOut, Loader2, ExternalLink } from "lucide-react";
+import { Inbox, FileText, MessageSquare, Briefcase, Tag, Users, LogOut, Loader2, ExternalLink } from "lucide-react";
 
 const items: { to: string; label: string; icon: typeof Inbox; exact?: boolean }[] = [
   { to: "/admin", label: "Leads", icon: Inbox, exact: true },
+  { to: "/admin/clients", label: "Clients", icon: Users },
   { to: "/admin/blog", label: "Blog", icon: FileText },
   { to: "/admin/testimonials", label: "Testimonials", icon: MessageSquare },
   { to: "/admin/services", label: "Services", icon: Briefcase },
