@@ -40,7 +40,7 @@ function OrderDetail() {
   };
   useEffect(() => { load(); }, [id]);
 
-  const updateOrder = async (patch: Partial<Order>) => {
+  const updateOrder = async (patch: Partial<Omit<Order, "client">>) => {
     await supabase.from("orders").update(patch).eq("id", id);
     load();
   };
