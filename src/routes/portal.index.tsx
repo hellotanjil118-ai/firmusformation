@@ -23,15 +23,17 @@ type Client = {
 function PortalHome() {
   const { user, isAdmin } = useAuth();
   const [client, setClient] = useState<Client | null>(null);
+  const [activeCount, setActiveCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user) return;
     (async () => {
-      // Try to auto-link by email if not yet linked
       await supabase.rpc("claim_client_by_email" as never);
       const { data } = await supabase.from("clients").select("*").eq("user_id", user.id).maybeSingle();
       setClient(data as Client | null);
+      const { count } = await supabase.from("orders").select("*", { count: "exact", head: true }).not("status", "in", "(closed,cancelled,delivered)");
+      setActiveCount(count ?? 0);
       setLoading(false);
     })();
   }, [user]);
