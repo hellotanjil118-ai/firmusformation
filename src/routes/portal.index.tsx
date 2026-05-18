@@ -59,7 +59,7 @@ function PortalHome() {
       ) : (
         <div className="space-y-6">
           <div className="grid gap-3 sm:grid-cols-3">
-            <Stat icon={FileText} label="Active Orders" value="—" hint="Coming in Batch 2" />
+            <Stat icon={FileText} label="Active Orders" value={String(activeCount)} hint={activeCount > 0 ? "View in My Orders" : "No active orders"} />
             <Stat icon={Receipt} label="Open Invoices" value="—" hint="Coming in Batch 3" />
             <Stat icon={Building2} label="Account Status" value={client.status} hint="" />
           </div>
