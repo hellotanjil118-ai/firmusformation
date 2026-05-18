@@ -3,7 +3,7 @@ import { useEffect, type ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { LayoutDashboard, FileText, Receipt, LogOut, Loader2, ExternalLink } from "lucide-react";
 
-const items = [
+const items: { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
   { to: "/portal", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/portal/orders", label: "My Orders", icon: FileText },
   { to: "/portal/invoices", label: "Invoices", icon: Receipt },
