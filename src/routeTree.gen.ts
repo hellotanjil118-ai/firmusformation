@@ -30,6 +30,8 @@ import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
+import { Route as PortalOrdersIndexRouteImport } from './routes/portal.orders.index'
+import { Route as PortalOrdersIdRouteImport } from './routes/portal.orders.$id'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
 import { Route as AdminClientsIdRouteImport } from './routes/admin.clients.$id'
 
@@ -138,6 +140,16 @@ const AdminBlogRoute = AdminBlogRouteImport.update({
   path: '/admin/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalOrdersIndexRoute = PortalOrdersIndexRouteImport.update({
+  id: '/portal/orders/',
+  path: '/portal/orders/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalOrdersIdRoute = PortalOrdersIdRouteImport.update({
+  id: '/portal/orders/$id',
+  path: '/portal/orders/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminOrdersIdRoute = AdminOrdersIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -173,6 +185,8 @@ export interface FileRoutesByFullPath {
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
+  '/portal/orders/$id': typeof PortalOrdersIdRoute
+  '/portal/orders/': typeof PortalOrdersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -198,6 +212,8 @@ export interface FileRoutesByTo {
   '/portal': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
+  '/portal/orders/$id': typeof PortalOrdersIdRoute
+  '/portal/orders': typeof PortalOrdersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -224,6 +240,8 @@ export interface FileRoutesById {
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
+  '/portal/orders/$id': typeof PortalOrdersIdRoute
+  '/portal/orders/': typeof PortalOrdersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -251,6 +269,8 @@ export interface FileRouteTypes {
     | '/portal/'
     | '/admin/clients/$id'
     | '/admin/orders/$id'
+    | '/portal/orders/$id'
+    | '/portal/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -276,6 +296,8 @@ export interface FileRouteTypes {
     | '/portal'
     | '/admin/clients/$id'
     | '/admin/orders/$id'
+    | '/portal/orders/$id'
+    | '/portal/orders'
   id:
     | '__root__'
     | '/'
@@ -301,6 +323,8 @@ export interface FileRouteTypes {
     | '/portal/'
     | '/admin/clients/$id'
     | '/admin/orders/$id'
+    | '/portal/orders/$id'
+    | '/portal/orders/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -325,6 +349,8 @@ export interface RootRouteChildren {
   ServicesSlugRoute: typeof ServicesSlugRoute
   AdminIndexRoute: typeof AdminIndexRoute
   PortalIndexRoute: typeof PortalIndexRoute
+  PortalOrdersIdRoute: typeof PortalOrdersIdRoute
+  PortalOrdersIndexRoute: typeof PortalOrdersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -476,6 +502,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/orders/': {
+      id: '/portal/orders/'
+      path: '/portal/orders'
+      fullPath: '/portal/orders/'
+      preLoaderRoute: typeof PortalOrdersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal/orders/$id': {
+      id: '/portal/orders/$id'
+      path: '/portal/orders/$id'
+      fullPath: '/portal/orders/$id'
+      preLoaderRoute: typeof PortalOrdersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/orders/$id': {
       id: '/admin/orders/$id'
       path: '/$id'
@@ -539,7 +579,19 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesSlugRoute: ServicesSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
   PortalIndexRoute: PortalIndexRoute,
+  PortalOrdersIdRoute: PortalOrdersIdRoute,
+  PortalOrdersIndexRoute: PortalOrdersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
