@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { Loader2, User } from "lucide-react";
 
 export const Route = createFileRoute("/portal/login")({
@@ -61,9 +62,22 @@ function PortalLogin() {
           </button>
         </form>
 
-        <div className="mt-4 text-center text-xs text-muted-foreground">
+        <div className="mt-4 flex flex-col items-center gap-2 text-center text-xs text-muted-foreground">
           {mode === "signin" ? (
-            <button onClick={() => setMode("signup")} className="hover:text-foreground">New client? Create an account →</button>
+            <>
+              <button onClick={() => setMode("signup")} className="hover:text-foreground">New client? Create an account →</button>
+              <button
+                type="button"
+                onClick={async () => {
+                  if (!email) return setError("Enter your email above first, then click forgot password.");
+                  const { error: err } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
+                  setError(err ? err.message : "Password reset email sent. Check your inbox.");
+                }}
+                className="hover:text-foreground"
+              >
+                Forgot password?
+              </button>
+            </>
           ) : (
             <button onClick={() => setMode("signin")} className="hover:text-foreground">← Back to sign in</button>
           )}

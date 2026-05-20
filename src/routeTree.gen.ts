@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -22,7 +23,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ServicesSlugRouteImport } from './routes/services_.$slug'
+import { Route as PortalProfileRouteImport } from './routes/portal.profile'
 import { Route as PortalLoginRouteImport } from './routes/portal.login'
+import { Route as PortalInvoicesRouteImport } from './routes/portal.invoices'
+import { Route as AdminTicketsRouteImport } from './routes/admin.tickets'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
 import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
@@ -30,8 +34,11 @@ import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
+import { Route as PortalTicketsIndexRouteImport } from './routes/portal.tickets.index'
 import { Route as PortalOrdersIndexRouteImport } from './routes/portal.orders.index'
+import { Route as PortalTicketsIdRouteImport } from './routes/portal.tickets.$id'
 import { Route as PortalOrdersIdRouteImport } from './routes/portal.orders.$id'
+import { Route as AdminTicketsIdRouteImport } from './routes/admin.tickets.$id'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
 import { Route as AdminClientsIdRouteImport } from './routes/admin.clients.$id'
 
@@ -48,6 +55,11 @@ const TermsRoute = TermsRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -100,9 +112,24 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
   path: '/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalProfileRoute = PortalProfileRouteImport.update({
+  id: '/portal/profile',
+  path: '/portal/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortalLoginRoute = PortalLoginRouteImport.update({
   id: '/portal/login',
   path: '/portal/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalInvoicesRoute = PortalInvoicesRouteImport.update({
+  id: '/portal/invoices',
+  path: '/portal/invoices',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTicketsRoute = AdminTicketsRouteImport.update({
+  id: '/admin/tickets',
+  path: '/admin/tickets',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
@@ -140,15 +167,30 @@ const AdminBlogRoute = AdminBlogRouteImport.update({
   path: '/admin/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalTicketsIndexRoute = PortalTicketsIndexRouteImport.update({
+  id: '/portal/tickets/',
+  path: '/portal/tickets/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortalOrdersIndexRoute = PortalOrdersIndexRouteImport.update({
   id: '/portal/orders/',
   path: '/portal/orders/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalTicketsIdRoute = PortalTicketsIdRouteImport.update({
+  id: '/portal/tickets/$id',
+  path: '/portal/tickets/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalOrdersIdRoute = PortalOrdersIdRouteImport.update({
   id: '/portal/orders/$id',
   path: '/portal/orders/$id',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTicketsIdRoute = AdminTicketsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminTicketsRoute,
 } as any)
 const AdminOrdersIdRoute = AdminOrdersIdRouteImport.update({
   id: '/$id',
@@ -169,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
@@ -179,14 +222,20 @@ export interface FileRoutesByFullPath {
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/tickets': typeof AdminTicketsRouteWithChildren
+  '/portal/invoices': typeof PortalInvoicesRoute
   '/portal/login': typeof PortalLoginRoute
+  '/portal/profile': typeof PortalProfileRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
+  '/admin/tickets/$id': typeof AdminTicketsIdRoute
   '/portal/orders/$id': typeof PortalOrdersIdRoute
+  '/portal/tickets/$id': typeof PortalTicketsIdRoute
   '/portal/orders/': typeof PortalOrdersIndexRoute
+  '/portal/tickets/': typeof PortalTicketsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -196,6 +245,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
@@ -206,14 +256,20 @@ export interface FileRoutesByTo {
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/tickets': typeof AdminTicketsRouteWithChildren
+  '/portal/invoices': typeof PortalInvoicesRoute
   '/portal/login': typeof PortalLoginRoute
+  '/portal/profile': typeof PortalProfileRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin': typeof AdminIndexRoute
   '/portal': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
+  '/admin/tickets/$id': typeof AdminTicketsIdRoute
   '/portal/orders/$id': typeof PortalOrdersIdRoute
+  '/portal/tickets/$id': typeof PortalTicketsIdRoute
   '/portal/orders': typeof PortalOrdersIndexRoute
+  '/portal/tickets': typeof PortalTicketsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -224,6 +280,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
@@ -234,14 +291,20 @@ export interface FileRoutesById {
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/tickets': typeof AdminTicketsRouteWithChildren
+  '/portal/invoices': typeof PortalInvoicesRoute
   '/portal/login': typeof PortalLoginRoute
+  '/portal/profile': typeof PortalProfileRoute
   '/services_/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
+  '/admin/tickets/$id': typeof AdminTicketsIdRoute
   '/portal/orders/$id': typeof PortalOrdersIdRoute
+  '/portal/tickets/$id': typeof PortalTicketsIdRoute
   '/portal/orders/': typeof PortalOrdersIndexRoute
+  '/portal/tickets/': typeof PortalTicketsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -253,6 +316,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/pricing'
     | '/privacy'
+    | '/reset-password'
     | '/services'
     | '/terms'
     | '/testimonials'
@@ -263,14 +327,20 @@ export interface FileRouteTypes {
     | '/admin/pricing'
     | '/admin/services'
     | '/admin/testimonials'
+    | '/admin/tickets'
+    | '/portal/invoices'
     | '/portal/login'
+    | '/portal/profile'
     | '/services/$slug'
     | '/admin/'
     | '/portal/'
     | '/admin/clients/$id'
     | '/admin/orders/$id'
+    | '/admin/tickets/$id'
     | '/portal/orders/$id'
+    | '/portal/tickets/$id'
     | '/portal/orders/'
+    | '/portal/tickets/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -280,6 +350,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/pricing'
     | '/privacy'
+    | '/reset-password'
     | '/services'
     | '/terms'
     | '/testimonials'
@@ -290,14 +361,20 @@ export interface FileRouteTypes {
     | '/admin/pricing'
     | '/admin/services'
     | '/admin/testimonials'
+    | '/admin/tickets'
+    | '/portal/invoices'
     | '/portal/login'
+    | '/portal/profile'
     | '/services/$slug'
     | '/admin'
     | '/portal'
     | '/admin/clients/$id'
     | '/admin/orders/$id'
+    | '/admin/tickets/$id'
     | '/portal/orders/$id'
+    | '/portal/tickets/$id'
     | '/portal/orders'
+    | '/portal/tickets'
   id:
     | '__root__'
     | '/'
@@ -307,6 +384,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/pricing'
     | '/privacy'
+    | '/reset-password'
     | '/services'
     | '/terms'
     | '/testimonials'
@@ -317,14 +395,20 @@ export interface FileRouteTypes {
     | '/admin/pricing'
     | '/admin/services'
     | '/admin/testimonials'
+    | '/admin/tickets'
+    | '/portal/invoices'
     | '/portal/login'
+    | '/portal/profile'
     | '/services_/$slug'
     | '/admin/'
     | '/portal/'
     | '/admin/clients/$id'
     | '/admin/orders/$id'
+    | '/admin/tickets/$id'
     | '/portal/orders/$id'
+    | '/portal/tickets/$id'
     | '/portal/orders/'
+    | '/portal/tickets/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -335,6 +419,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ServicesRoute: typeof ServicesRoute
   TermsRoute: typeof TermsRoute
   TestimonialsRoute: typeof TestimonialsRoute
@@ -345,12 +430,17 @@ export interface RootRouteChildren {
   AdminPricingRoute: typeof AdminPricingRoute
   AdminServicesRoute: typeof AdminServicesRoute
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
+  AdminTicketsRoute: typeof AdminTicketsRouteWithChildren
+  PortalInvoicesRoute: typeof PortalInvoicesRoute
   PortalLoginRoute: typeof PortalLoginRoute
+  PortalProfileRoute: typeof PortalProfileRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   AdminIndexRoute: typeof AdminIndexRoute
   PortalIndexRoute: typeof PortalIndexRoute
   PortalOrdersIdRoute: typeof PortalOrdersIdRoute
+  PortalTicketsIdRoute: typeof PortalTicketsIdRoute
   PortalOrdersIndexRoute: typeof PortalOrdersIndexRoute
+  PortalTicketsIndexRoute: typeof PortalTicketsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -374,6 +464,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -446,11 +543,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/profile': {
+      id: '/portal/profile'
+      path: '/portal/profile'
+      fullPath: '/portal/profile'
+      preLoaderRoute: typeof PortalProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portal/login': {
       id: '/portal/login'
       path: '/portal/login'
       fullPath: '/portal/login'
       preLoaderRoute: typeof PortalLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal/invoices': {
+      id: '/portal/invoices'
+      path: '/portal/invoices'
+      fullPath: '/portal/invoices'
+      preLoaderRoute: typeof PortalInvoicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/tickets': {
+      id: '/admin/tickets'
+      path: '/admin/tickets'
+      fullPath: '/admin/tickets'
+      preLoaderRoute: typeof AdminTicketsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/testimonials': {
@@ -502,11 +620,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/tickets/': {
+      id: '/portal/tickets/'
+      path: '/portal/tickets'
+      fullPath: '/portal/tickets/'
+      preLoaderRoute: typeof PortalTicketsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portal/orders/': {
       id: '/portal/orders/'
       path: '/portal/orders'
       fullPath: '/portal/orders/'
       preLoaderRoute: typeof PortalOrdersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal/tickets/$id': {
+      id: '/portal/tickets/$id'
+      path: '/portal/tickets/$id'
+      fullPath: '/portal/tickets/$id'
+      preLoaderRoute: typeof PortalTicketsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/portal/orders/$id': {
@@ -515,6 +647,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/portal/orders/$id'
       preLoaderRoute: typeof PortalOrdersIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/tickets/$id': {
+      id: '/admin/tickets/$id'
+      path: '/$id'
+      fullPath: '/admin/tickets/$id'
+      preLoaderRoute: typeof AdminTicketsIdRouteImport
+      parentRoute: typeof AdminTicketsRoute
     }
     '/admin/orders/$id': {
       id: '/admin/orders/$id'
@@ -557,6 +696,18 @@ const AdminOrdersRouteWithChildren = AdminOrdersRoute._addFileChildren(
   AdminOrdersRouteChildren,
 )
 
+interface AdminTicketsRouteChildren {
+  AdminTicketsIdRoute: typeof AdminTicketsIdRoute
+}
+
+const AdminTicketsRouteChildren: AdminTicketsRouteChildren = {
+  AdminTicketsIdRoute: AdminTicketsIdRoute,
+}
+
+const AdminTicketsRouteWithChildren = AdminTicketsRoute._addFileChildren(
+  AdminTicketsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -565,6 +716,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ServicesRoute: ServicesRoute,
   TermsRoute: TermsRoute,
   TestimonialsRoute: TestimonialsRoute,
@@ -575,12 +727,17 @@ const rootRouteChildren: RootRouteChildren = {
   AdminPricingRoute: AdminPricingRoute,
   AdminServicesRoute: AdminServicesRoute,
   AdminTestimonialsRoute: AdminTestimonialsRoute,
+  AdminTicketsRoute: AdminTicketsRouteWithChildren,
+  PortalInvoicesRoute: PortalInvoicesRoute,
   PortalLoginRoute: PortalLoginRoute,
+  PortalProfileRoute: PortalProfileRoute,
   ServicesSlugRoute: ServicesSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
   PortalIndexRoute: PortalIndexRoute,
   PortalOrdersIdRoute: PortalOrdersIdRoute,
+  PortalTicketsIdRoute: PortalTicketsIdRoute,
   PortalOrdersIndexRoute: PortalOrdersIndexRoute,
+  PortalTicketsIndexRoute: PortalTicketsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
