@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { PortalShell } from "@/components/PortalShell";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, ArrowLeft, CheckCircle2, Circle, Clock, AlertOctagon, Send } from "lucide-react";
+import { Loader2, ArrowLeft, CheckCircle2, Circle, Clock, AlertOctagon, Send, Upload, FileText, Download } from "lucide-react";
 import { STATUS_LABEL, STATUS_COLOR, type OrderStatus, type StageStatus } from "@/lib/orderConstants";
 
 export const Route = createFileRoute("/portal/orders/$id")({
@@ -14,6 +14,7 @@ export const Route = createFileRoute("/portal/orders/$id")({
 type Order = { id: string; package_name: string; price: number; currency: string; status: OrderStatus; due_at: string | null; started_at: string | null };
 type Stage = { id: string; name: string; description: string | null; order_index: number; status: StageStatus; completed_at: string | null; notes: string | null };
 type Msg = { id: string; sender_type: string; body: string; created_at: string };
+type Doc = { id: string; name: string; file_path: string; file_size: number | null; mime_type: string | null; uploader_type: string; created_at: string };
 
 const ICON: Record<StageStatus, typeof Circle> = { pending: Circle, in_progress: Clock, done: CheckCircle2, blocked: AlertOctagon };
 const COLOR: Record<StageStatus, string> = { pending: "text-muted-foreground", in_progress: "text-blue-500", done: "text-green-500", blocked: "text-red-500" };
@@ -24,7 +25,9 @@ function PortalOrderDetail() {
   const [order, setOrder] = useState<Order | null>(null);
   const [stages, setStages] = useState<Stage[]>([]);
   const [messages, setMessages] = useState<Msg[]>([]);
+  const [docs, setDocs] = useState<Doc[]>([]);
   const [newMsg, setNewMsg] = useState("");
+  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
@@ -34,9 +37,34 @@ function PortalOrderDetail() {
     setStages((s as Stage[]) ?? []);
     const { data: m } = await supabase.from("order_messages").select("*").eq("order_id", id).order("created_at");
     setMessages((m as Msg[]) ?? []);
+    const { data: d } = await supabase.from("order_documents").select("*").eq("order_id", id).order("created_at", { ascending: false });
+    setDocs((d as Doc[]) ?? []);
     setLoading(false);
   };
   useEffect(() => { load(); }, [id]);
+
+  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    setUploading(true);
+    const path = `${id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
+    const { error: upErr } = await supabase.storage.from("order-documents").upload(path, file);
+    if (upErr) { alert(upErr.message); setUploading(false); return; }
+    const { error: insErr } = await supabase.from("order_documents").insert({
+      order_id: id, name: file.name, file_path: path, file_size: file.size,
+      mime_type: file.type, uploader_type: "client", uploaded_by: user.id, client_visible: true,
+    });
+    if (insErr) alert(insErr.message);
+    setUploading(false);
+    e.target.value = "";
+    load();
+  };
+
+  const downloadDoc = async (d: Doc) => {
+    const { data, error } = await supabase.storage.from("order-documents").createSignedUrl(d.file_path, 60);
+    if (error || !data) return alert(error?.message ?? "Failed to fetch file");
+    window.open(data.signedUrl, "_blank");
+  };
 
   const sendMessage = async () => {
     if (!newMsg.trim() || !user) return;
@@ -118,6 +146,28 @@ function PortalOrderDetail() {
               {order.started_at && <div className="flex justify-between"><dt className="text-muted-foreground">Started</dt><dd>{new Date(order.started_at).toLocaleDateString()}</dd></div>}
               {order.due_at && <div className="flex justify-between"><dt className="text-muted-foreground">Due</dt><dd>{new Date(order.due_at).toLocaleDateString()}</dd></div>}
             </dl>
+          </div>
+
+          <div className="rounded-xl border border-border bg-card p-6">
+            <h2 className="mb-3 font-display text-lg">Documents</h2>
+            <p className="mb-3 text-xs text-muted-foreground">Upload passports, NID, utility bills, tax docs, or any file we requested.</p>
+            <label className={`mb-4 flex cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-border px-3 py-3 text-xs hover:bg-secondary ${uploading ? "opacity-60" : ""}`}>
+              {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+              <span>{uploading ? "Uploading…" : "Upload file"}</span>
+              <input type="file" className="hidden" onChange={uploadFile} disabled={uploading} />
+            </label>
+            <div className="space-y-2">
+              {docs.length === 0 ? <p className="text-xs text-muted-foreground">No documents yet.</p> : docs.map((d) => (
+                <button key={d.id} onClick={() => downloadDoc(d)} className="flex w-full items-center gap-2 rounded-md border border-border p-2 text-left text-xs hover:bg-secondary">
+                  <FileText size={14} className="shrink-0 text-muted-foreground" />
+                  <div className="flex-1 truncate">
+                    <p className="truncate font-medium">{d.name}</p>
+                    <p className="text-[10px] text-muted-foreground">{d.uploader_type === "client" ? "You" : "Firmus team"} · {new Date(d.created_at).toLocaleDateString()}</p>
+                  </div>
+                  <Download size={14} className="shrink-0 text-muted-foreground" />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
