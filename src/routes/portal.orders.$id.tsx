@@ -25,7 +25,9 @@ function PortalOrderDetail() {
   const [order, setOrder] = useState<Order | null>(null);
   const [stages, setStages] = useState<Stage[]>([]);
   const [messages, setMessages] = useState<Msg[]>([]);
+  const [docs, setDocs] = useState<Doc[]>([]);
   const [newMsg, setNewMsg] = useState("");
+  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
