@@ -147,6 +147,28 @@ function PortalOrderDetail() {
               {order.due_at && <div className="flex justify-between"><dt className="text-muted-foreground">Due</dt><dd>{new Date(order.due_at).toLocaleDateString()}</dd></div>}
             </dl>
           </div>
+
+          <div className="rounded-xl border border-border bg-card p-6">
+            <h2 className="mb-3 font-display text-lg">Documents</h2>
+            <p className="mb-3 text-xs text-muted-foreground">Upload passports, NID, utility bills, tax docs, or any file we requested.</p>
+            <label className={`mb-4 flex cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-border px-3 py-3 text-xs hover:bg-secondary ${uploading ? "opacity-60" : ""}`}>
+              {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+              <span>{uploading ? "Uploading…" : "Upload file"}</span>
+              <input type="file" className="hidden" onChange={uploadFile} disabled={uploading} />
+            </label>
+            <div className="space-y-2">
+              {docs.length === 0 ? <p className="text-xs text-muted-foreground">No documents yet.</p> : docs.map((d) => (
+                <button key={d.id} onClick={() => downloadDoc(d)} className="flex w-full items-center gap-2 rounded-md border border-border p-2 text-left text-xs hover:bg-secondary">
+                  <FileText size={14} className="shrink-0 text-muted-foreground" />
+                  <div className="flex-1 truncate">
+                    <p className="truncate font-medium">{d.name}</p>
+                    <p className="text-[10px] text-muted-foreground">{d.uploader_type === "client" ? "You" : "Firmus team"} · {new Date(d.created_at).toLocaleDateString()}</p>
+                  </div>
+                  <Download size={14} className="shrink-0 text-muted-foreground" />
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </PortalShell>
