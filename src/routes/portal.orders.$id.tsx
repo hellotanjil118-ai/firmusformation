@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { PortalShell } from "@/components/PortalShell";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, ArrowLeft, CheckCircle2, Circle, Clock, AlertOctagon, Send } from "lucide-react";
+import { Loader2, ArrowLeft, CheckCircle2, Circle, Clock, AlertOctagon, Send, Upload, FileText, Download } from "lucide-react";
 import { STATUS_LABEL, STATUS_COLOR, type OrderStatus, type StageStatus } from "@/lib/orderConstants";
 
 export const Route = createFileRoute("/portal/orders/$id")({
