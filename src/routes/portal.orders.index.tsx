@@ -28,11 +28,16 @@ function PortalOrders() {
 
   return (
     <PortalShell title="My Orders">
+      <div className="mb-4 flex justify-end">
+        <Link to="/portal/orders/new" className="inline-flex items-center gap-2 rounded-md bg-gradient-gold px-4 py-2 text-sm font-semibold text-gold-foreground shadow-gold">
+          + Order a service
+        </Link>
+      </div>
       {orders === null ? <Loader2 className="animate-spin" /> : orders.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border bg-card p-12 text-center">
           <FileText className="mx-auto mb-3 text-muted-foreground" size={32} />
-          <h2 className="font-display text-lg">No orders yet</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Once your account is linked and we start work, your orders will appear here.</p>
+          <h2 className="font-display text-lg">No orders yet — place your first one above.</h2>
+          <p className="mt-2 text-sm text-muted-foreground">Choose a service and tell us about your project to get started.</p>
         </div>
       ) : (
         <div className="grid gap-3">

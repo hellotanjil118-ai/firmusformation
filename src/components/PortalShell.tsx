@@ -1,11 +1,13 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { LayoutDashboard, FileText, Receipt, LogOut, Loader2, ExternalLink, LifeBuoy, User } from "lucide-react";
+import { LayoutDashboard, FileText, Receipt, LogOut, Loader2, ExternalLink, LifeBuoy, User, Plus } from "lucide-react";
+import { NotificationBell } from "@/components/NotificationBell";
 
 const items: { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
   { to: "/portal", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/portal/orders", label: "My Orders", icon: FileText },
+  { to: "/portal/orders/new", label: "Order a Service", icon: Plus },
   { to: "/portal/invoices", label: "Invoices", icon: Receipt },
   { to: "/portal/tickets", label: "Support", icon: LifeBuoy },
   { to: "/portal/profile", label: "Profile", icon: User },
@@ -66,9 +68,12 @@ export function PortalShell({ children, title }: { children: ReactNode; title: s
         </div>
       </aside>
       <main className="flex-1 overflow-auto">
-        <header className="sticky top-0 z-10 border-b border-border bg-card/80 px-6 py-4 backdrop-blur">
-          <h1 className="font-display text-2xl">{title}</h1>
-          <p className="text-xs text-muted-foreground">Signed in as {user.email}</p>
+        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/80 px-6 py-4 backdrop-blur">
+          <div>
+            <h1 className="font-display text-2xl">{title}</h1>
+            <p className="text-xs text-muted-foreground">Signed in as {user.email}</p>
+          </div>
+          <NotificationBell />
         </header>
         <div className="p-6">{children}</div>
       </main>
