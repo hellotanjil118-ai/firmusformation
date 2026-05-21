@@ -14,6 +14,7 @@ export const Route = createFileRoute("/portal/orders/$id")({
 type Order = { id: string; package_name: string; price: number; currency: string; status: OrderStatus; due_at: string | null; started_at: string | null };
 type Stage = { id: string; name: string; description: string | null; order_index: number; status: StageStatus; completed_at: string | null; notes: string | null };
 type Msg = { id: string; sender_type: string; body: string; created_at: string };
+type Doc = { id: string; name: string; file_path: string; file_size: number | null; mime_type: string | null; uploader_type: string; created_at: string };
 
 const ICON: Record<StageStatus, typeof Circle> = { pending: Circle, in_progress: Clock, done: CheckCircle2, blocked: AlertOctagon };
 const COLOR: Record<StageStatus, string> = { pending: "text-muted-foreground", in_progress: "text-blue-500", done: "text-green-500", blocked: "text-red-500" };
