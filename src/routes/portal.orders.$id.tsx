@@ -37,9 +37,34 @@ function PortalOrderDetail() {
     setStages((s as Stage[]) ?? []);
     const { data: m } = await supabase.from("order_messages").select("*").eq("order_id", id).order("created_at");
     setMessages((m as Msg[]) ?? []);
+    const { data: d } = await supabase.from("order_documents").select("*").eq("order_id", id).order("created_at", { ascending: false });
+    setDocs((d as Doc[]) ?? []);
     setLoading(false);
   };
   useEffect(() => { load(); }, [id]);
+
+  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    setUploading(true);
+    const path = `${id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
+    const { error: upErr } = await supabase.storage.from("order-documents").upload(path, file);
+    if (upErr) { alert(upErr.message); setUploading(false); return; }
+    const { error: insErr } = await supabase.from("order_documents").insert({
+      order_id: id, name: file.name, file_path: path, file_size: file.size,
+      mime_type: file.type, uploader_type: "client", uploaded_by: user.id, client_visible: true,
+    });
+    if (insErr) alert(insErr.message);
+    setUploading(false);
+    e.target.value = "";
+    load();
+  };
+
+  const downloadDoc = async (d: Doc) => {
+    const { data, error } = await supabase.storage.from("order-documents").createSignedUrl(d.file_path, 60);
+    if (error || !data) return alert(error?.message ?? "Failed to fetch file");
+    window.open(data.signedUrl, "_blank");
+  };
 
   const sendMessage = async () => {
     if (!newMsg.trim() || !user) return;
