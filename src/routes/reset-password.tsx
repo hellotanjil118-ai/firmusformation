@@ -59,7 +59,7 @@ function ResetPassword() {
         </div>
 
         {!ready ? (
-          <p className="text-sm text-destructive">{err ?? "Verifying link…"}</p>
+          <p className={err ? "text-sm text-destructive" : "text-sm text-muted-foreground"}>{err ?? "Verifying link…"}</p>
         ) : (
           <form onSubmit={onSubmit} className="space-y-4">
             <div>
