@@ -93,9 +93,10 @@ function PortalLogin() {
               <button
                 type="button"
                 onClick={async () => {
+                  setError(null); setInfo(null);
                   if (!email) return setError("Enter your email above first, then click forgot password.");
                   const { error: err } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
-                  setError(err ? err.message : "Password reset email sent. Check your inbox.");
+                  if (err) setError(err.message); else setInfo("Password reset email sent. Check your inbox.");
                 }}
                 className="hover:text-foreground"
               >
