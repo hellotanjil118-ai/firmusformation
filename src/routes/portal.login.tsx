@@ -27,6 +27,7 @@ function PortalLogin() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setInfo(null);
     setBusy(true);
     const fn = mode === "signin" ? signIn : signUp;
     const { error: err } = await fn(email, password);
