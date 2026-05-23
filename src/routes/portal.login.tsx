@@ -31,7 +31,9 @@ function PortalLogin() {
     const { error: err } = await fn(email, password);
     setBusy(false);
     if (err) setError(err);
-    else if (mode === "signup") setError("Account created. Check your email to confirm, then sign in.");
+    else if (mode === "signup") {
+      setInfo("Account created. Check your email to confirm, then sign in.");
+    }
   };
 
   return (
