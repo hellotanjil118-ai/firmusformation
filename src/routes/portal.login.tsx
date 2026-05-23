@@ -17,6 +17,7 @@ function PortalLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -26,12 +27,15 @@ function PortalLogin() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setInfo(null);
     setBusy(true);
     const fn = mode === "signin" ? signIn : signUp;
     const { error: err } = await fn(email, password);
     setBusy(false);
     if (err) setError(err);
-    else if (mode === "signup") setError("Account created. Check your email to confirm, then sign in.");
+    else if (mode === "signup") {
+      setInfo("Account created. Check your email to confirm, then sign in.");
+    }
   };
 
   return (
@@ -57,6 +61,7 @@ function PortalLogin() {
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none" />
           </div>
           {error && <p className="text-sm text-destructive">{error}</p>}
+          {info && <p className="text-sm text-green-600">{info}</p>}
           <button type="submit" disabled={busy} className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-gradient-gold px-4 py-2.5 text-sm font-semibold text-gold-foreground shadow-gold disabled:opacity-60">
             {busy && <Loader2 size={14} className="animate-spin" />}
             {mode === "signin" ? "Sign In" : "Create Account"}
@@ -88,9 +93,10 @@ function PortalLogin() {
               <button
                 type="button"
                 onClick={async () => {
+                  setError(null); setInfo(null);
                   if (!email) return setError("Enter your email above first, then click forgot password.");
                   const { error: err } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
-                  setError(err ? err.message : "Password reset email sent. Check your inbox.");
+                  if (err) setError(err.message); else setInfo("Password reset email sent. Check your inbox.");
                 }}
                 className="hover:text-foreground"
               >
