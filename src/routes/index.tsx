@@ -69,9 +69,9 @@ function Home() {
           alt="Amazon FBA global commerce illustration"
           width={1920}
           height={1080}
-          className="absolute inset-0 h-full w-full object-cover opacity-60"
+          className="absolute inset-0 h-full w-full object-cover opacity-15"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/70" />
         <div className="relative mx-auto max-w-7xl px-6 py-28 md:py-40">
           <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs uppercase tracking-[0.2em] text-gold">
             <Sparkles size={14} /> Amazon FBA Agency
