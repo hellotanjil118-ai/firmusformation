@@ -46,43 +46,45 @@
 :root {
   --radius: 0.75rem;
 
-  /* Cloud White — light, airy SaaS (Stripe-like) */
-  --background: oklch(0.99 0.003 250);          /* #fafbfc */
-  --foreground: oklch(0.22 0.03 260);
-  --surface: oklch(0.96 0.008 250);             /* #e8ecf1 */
+  /* Emerald Prestige — rich emerald + gold on warm ivory */
+  --background: oklch(0.985 0.008 95);
+  --foreground: oklch(0.22 0.04 170);
+  --surface: oklch(0.96 0.012 95);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.03 260);
+  --card-foreground: oklch(0.22 0.04 170);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.03 260);
+  --popover-foreground: oklch(0.22 0.04 170);
 
-  --primary: oklch(0.62 0.19 260);              /* #3b82f6 */
-  --primary-foreground: oklch(0.99 0 0);
-  --primary-glow: oklch(0.72 0.16 250);
+  --primary: oklch(0.40 0.10 165);              /* #064e3b emerald */
+  --primary-foreground: oklch(0.985 0.008 95);
+  --primary-glow: oklch(0.52 0.13 165);         /* #0d7a5f */
 
-  --secondary: oklch(0.96 0.008 250);
-  --secondary-foreground: oklch(0.30 0.03 260);
+  --secondary: oklch(0.96 0.012 95);
+  --secondary-foreground: oklch(0.30 0.05 170);
 
-  --muted: oklch(0.96 0.008 250);
-  --muted-foreground: oklch(0.55 0.025 255);    /* #94a3b8 */
+  --muted: oklch(0.94 0.014 95);
+  --muted-foreground: oklch(0.50 0.03 165);
 
-  --accent: oklch(0.62 0.19 260);
-  --accent-foreground: oklch(0.99 0 0);
+  --accent: oklch(0.74 0.13 85);                /* #c9a84c gold */
+  --accent-foreground: oklch(0.22 0.04 170);
 
-  --gold: oklch(0.62 0.19 260);                 /* re-mapped to brand blue */
-  --gold-foreground: oklch(0.99 0 0);
+  --gold: oklch(0.74 0.13 85);
+  --gold-foreground: oklch(0.22 0.04 170);
 
   --destructive: oklch(0.6 0.22 27);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.22 0.03 260 / 10%);
-  --input: oklch(0.22 0.03 260 / 12%);
-  --ring: oklch(0.62 0.19 260);
+  --border: oklch(0.40 0.10 165 / 12%);
+  --input: oklch(0.40 0.10 165 / 14%);
+  --ring: oklch(0.74 0.13 85);
 
-  --gradient-hero: radial-gradient(ellipse at top right, color-mix(in oklab, var(--primary) 25%, transparent), transparent 60%),
-                   linear-gradient(180deg, oklch(0.99 0.003 250), oklch(0.96 0.012 255));
+  --gradient-hero: radial-gradient(ellipse at top right, color-mix(in oklab, var(--gold) 28%, transparent), transparent 60%),
+                   radial-gradient(ellipse at bottom left, color-mix(in oklab, var(--primary) 22%, transparent), transparent 55%),
+                   linear-gradient(180deg, oklch(0.985 0.008 95), oklch(0.95 0.018 95));
   --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
-  --gradient-gold: linear-gradient(135deg, oklch(0.62 0.19 260), oklch(0.72 0.16 250));
+  --gradient-gold: linear-gradient(135deg, oklch(0.68 0.14 80), oklch(0.82 0.12 90));
+  --gradient-cta: linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 55%, var(--gold) 130%);
 }
 
 @layer base {
@@ -101,17 +103,38 @@
   .bg-gradient-hero { background: var(--gradient-hero); }
   .bg-gradient-primary { background: var(--gradient-primary); }
   .bg-gradient-gold { background: var(--gradient-gold); }
+  .bg-gradient-cta { background: var(--gradient-cta); background-size: 200% 200%; }
   .text-gradient-gold {
     background: var(--gradient-gold);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
-  .shadow-elegant { box-shadow: var(--shadow-elegant); }
-  .shadow-gold { box-shadow: var(--shadow-gold); }
+  .text-gradient-emerald {
+    background: linear-gradient(135deg, var(--primary), var(--primary-glow), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .shadow-elegant { box-shadow: 0 20px 60px -20px color-mix(in oklab, var(--primary) 35%, transparent); }
+  .shadow-gold { box-shadow: 0 16px 50px -14px color-mix(in oklab, var(--gold) 55%, transparent); }
+  .shadow-luxe { box-shadow: 0 30px 80px -24px color-mix(in oklab, var(--primary) 45%, transparent), 0 0 0 1px color-mix(in oklab, var(--gold) 25%, transparent); }
+  .ring-gold { box-shadow: 0 0 0 1px color-mix(in oklab, var(--gold) 60%, transparent); }
+  .cta-luxe {
+    background: var(--gradient-cta);
+    background-size: 200% 200%;
+    color: var(--primary-foreground);
+    transition: background-position .6s ease, transform .2s ease, box-shadow .3s ease;
+    box-shadow: 0 12px 32px -10px color-mix(in oklab, var(--primary) 50%, transparent);
+  }
+  .cta-luxe:hover {
+    background-position: 100% 0;
+    transform: translateY(-1px);
+    box-shadow: 0 18px 44px -12px color-mix(in oklab, var(--gold) 55%, transparent);
+  }
   .glass {
-    background: color-mix(in oklab, var(--surface) 70%, transparent);
-    backdrop-filter: blur(12px);
-    border: 1px solid color-mix(in oklab, white 8%, transparent);
+    background: color-mix(in oklab, var(--card) 78%, transparent);
+    backdrop-filter: blur(14px);
+    border: 1px solid color-mix(in oklab, var(--gold) 18%, transparent);
   }
 }
