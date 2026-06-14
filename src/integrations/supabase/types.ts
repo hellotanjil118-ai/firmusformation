@@ -122,6 +122,44 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_activities: {
+        Row: {
+          author_id: string | null
+          body: string | null
+          created_at: string
+          id: string
+          kind: string
+          lead_id: string
+          meta: Json | null
+        }
+        Insert: {
+          author_id?: string | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind: string
+          lead_id: string
+          meta?: Json | null
+        }
+        Update: {
+          author_id?: string | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          lead_id?: string
+          meta?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_activities_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_notes: {
         Row: {
           author_id: string | null
@@ -156,6 +194,9 @@ export type Database = {
       }
       leads: {
         Row: {
+          assigned_to: string | null
+          company: string | null
+          country: string | null
           created_at: string
           email: string
           id: string
@@ -164,10 +205,15 @@ export type Database = {
           notes: string | null
           phone: string | null
           service: string | null
+          source: string | null
           status: string
           updated_at: string
+          value: number | null
         }
         Insert: {
+          assigned_to?: string | null
+          company?: string | null
+          country?: string | null
           created_at?: string
           email: string
           id?: string
@@ -176,10 +222,15 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           service?: string | null
+          source?: string | null
           status?: string
           updated_at?: string
+          value?: number | null
         }
         Update: {
+          assigned_to?: string | null
+          company?: string | null
+          country?: string | null
           created_at?: string
           email?: string
           id?: string
@@ -188,8 +239,10 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           service?: string | null
+          source?: string | null
           status?: string
           updated_at?: string
+          value?: number | null
         }
         Relationships: []
       }

@@ -32,6 +32,7 @@ import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as PortalTicketsIndexRouteImport } from './routes/portal.tickets.index'
@@ -41,6 +42,7 @@ import { Route as PortalOrdersNewRouteImport } from './routes/portal.orders.new'
 import { Route as PortalOrdersIdRouteImport } from './routes/portal.orders.$id'
 import { Route as AdminTicketsIdRouteImport } from './routes/admin.tickets.$id'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
+import { Route as AdminLeadsIdRouteImport } from './routes/admin.leads.$id'
 import { Route as AdminClientsIdRouteImport } from './routes/admin.clients.$id'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
@@ -158,6 +160,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLeadsRoute = AdminLeadsRouteImport.update({
+  id: '/admin/leads',
+  path: '/admin/leads',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminClientsRoute = AdminClientsRouteImport.update({
   id: '/admin/clients',
   path: '/admin/clients',
@@ -203,6 +210,11 @@ const AdminOrdersIdRoute = AdminOrdersIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminOrdersRoute,
 } as any)
+const AdminLeadsIdRoute = AdminLeadsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminLeadsRoute,
+} as any)
 const AdminClientsIdRoute = AdminClientsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -223,6 +235,7 @@ export interface FileRoutesByFullPath {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
@@ -236,6 +249,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/tickets/$id': typeof AdminTicketsIdRoute
   '/portal/orders/$id': typeof PortalOrdersIdRoute
@@ -258,6 +272,7 @@ export interface FileRoutesByTo {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
@@ -271,6 +286,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/portal': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/tickets/$id': typeof AdminTicketsIdRoute
   '/portal/orders/$id': typeof PortalOrdersIdRoute
@@ -294,6 +310,7 @@ export interface FileRoutesById {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
@@ -307,6 +324,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/tickets/$id': typeof AdminTicketsIdRoute
   '/portal/orders/$id': typeof PortalOrdersIdRoute
@@ -331,6 +349,7 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
     | '/admin/pricing'
@@ -344,6 +363,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/portal/'
     | '/admin/clients/$id'
+    | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/tickets/$id'
     | '/portal/orders/$id'
@@ -366,6 +386,7 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
     | '/admin/pricing'
@@ -379,6 +400,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/portal'
     | '/admin/clients/$id'
+    | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/tickets/$id'
     | '/portal/orders/$id'
@@ -401,6 +423,7 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
     | '/admin/pricing'
@@ -414,6 +437,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/portal/'
     | '/admin/clients/$id'
+    | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/tickets/$id'
     | '/portal/orders/$id'
@@ -437,6 +461,7 @@ export interface RootRouteChildren {
   TestimonialsRoute: typeof TestimonialsRoute
   AdminBlogRoute: typeof AdminBlogRoute
   AdminClientsRoute: typeof AdminClientsRouteWithChildren
+  AdminLeadsRoute: typeof AdminLeadsRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   AdminOrdersRoute: typeof AdminOrdersRouteWithChildren
   AdminPricingRoute: typeof AdminPricingRoute
@@ -619,6 +644,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/leads': {
+      id: '/admin/leads'
+      path: '/admin/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminLeadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/clients': {
       id: '/admin/clients'
       path: '/admin/clients'
@@ -682,6 +714,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminOrdersIdRouteImport
       parentRoute: typeof AdminOrdersRoute
     }
+    '/admin/leads/$id': {
+      id: '/admin/leads/$id'
+      path: '/$id'
+      fullPath: '/admin/leads/$id'
+      preLoaderRoute: typeof AdminLeadsIdRouteImport
+      parentRoute: typeof AdminLeadsRoute
+    }
     '/admin/clients/$id': {
       id: '/admin/clients/$id'
       path: '/$id'
@@ -702,6 +741,18 @@ const AdminClientsRouteChildren: AdminClientsRouteChildren = {
 
 const AdminClientsRouteWithChildren = AdminClientsRoute._addFileChildren(
   AdminClientsRouteChildren,
+)
+
+interface AdminLeadsRouteChildren {
+  AdminLeadsIdRoute: typeof AdminLeadsIdRoute
+}
+
+const AdminLeadsRouteChildren: AdminLeadsRouteChildren = {
+  AdminLeadsIdRoute: AdminLeadsIdRoute,
+}
+
+const AdminLeadsRouteWithChildren = AdminLeadsRoute._addFileChildren(
+  AdminLeadsRouteChildren,
 )
 
 interface AdminOrdersRouteChildren {
@@ -742,6 +793,7 @@ const rootRouteChildren: RootRouteChildren = {
   TestimonialsRoute: TestimonialsRoute,
   AdminBlogRoute: AdminBlogRoute,
   AdminClientsRoute: AdminClientsRouteWithChildren,
+  AdminLeadsRoute: AdminLeadsRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   AdminOrdersRoute: AdminOrdersRouteWithChildren,
   AdminPricingRoute: AdminPricingRoute,
@@ -763,13 +815,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
