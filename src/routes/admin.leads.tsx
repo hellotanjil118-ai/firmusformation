@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { AdminShell } from "@/components/AdminShell";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Phone, Building2, Globe, DollarSign, Plus, Search, Loader2 } from "lucide-react";
+import { Mail, Phone, Building2, Globe, Plus, Search, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/leads")({
