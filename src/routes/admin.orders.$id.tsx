@@ -217,6 +217,29 @@ function OrderDetail() {
             </div>
           </div>
 
+          <div className="rounded-xl border border-border bg-card p-6">
+            <h2 className="mb-3 font-display text-lg">Documents</h2>
+            <label className={`mb-3 flex cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-border px-3 py-3 text-xs hover:bg-secondary ${uploading ? "opacity-60" : ""}`}>
+              {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+              <span>{uploading ? "Uploading…" : "Upload document"}</span>
+              <input type="file" className="hidden" onChange={uploadFile} disabled={uploading} />
+            </label>
+            <div className="space-y-2">
+              {docs.length === 0 ? <p className="text-xs text-muted-foreground">No documents yet.</p> : docs.map((d) => (
+                <div key={d.id} className="flex items-center gap-2 rounded-md border border-border p-2 text-xs">
+                  <FileText size={14} className="shrink-0 text-muted-foreground" />
+                  <div className="flex-1 truncate">
+                    <p className="truncate font-medium">{d.name}</p>
+                    <p className="text-[10px] text-muted-foreground">{d.uploader_type === "admin" ? "You" : "Client"} · {new Date(d.created_at).toLocaleDateString()}{!d.client_visible && " · Hidden"}</p>
+                  </div>
+                  <button onClick={() => toggleDocVisibility(d)} title={d.client_visible ? "Hide from client" : "Show to client"} className="text-muted-foreground hover:text-foreground">{d.client_visible ? <Eye size={14} /> : <EyeOff size={14} />}</button>
+                  <button onClick={() => downloadDoc(d)} className="text-muted-foreground hover:text-foreground"><Download size={14} /></button>
+                  <button onClick={() => deleteDoc(d)} className="text-muted-foreground hover:text-destructive"><Trash2 size={14} /></button>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <button onClick={deleteOrder} className="inline-flex w-full items-center justify-center gap-1 rounded-md border border-destructive/30 px-3 py-2 text-sm text-destructive hover:bg-destructive/10">
             <Trash2 size={14} /> Delete Order
           </button>
