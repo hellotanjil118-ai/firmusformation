@@ -36,7 +36,7 @@ function InvoicesAdmin() {
   }) ?? null, [items, q, filter]);
 
   const stats = useMemo(() => {
-    if (!items) return { paid: 0, outstanding: 0, overdue: 0, count: items?.length ?? 0 };
+    if (!items) return { paid: 0, outstanding: 0, overdue: 0, count: 0 };
     const paid = items.filter((i) => i.status === "paid").reduce((s, i) => s + Number(i.total), 0);
     const outstanding = items.filter((i) => i.status === "sent" || i.status === "overdue").reduce((s, i) => s + Number(i.total), 0);
     const overdue = items.filter((i) => i.status === "overdue").reduce((s, i) => s + Number(i.total), 0);

@@ -33,6 +33,7 @@ import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminInvoicesRouteImport } from './routes/admin.invoices'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as PortalTicketsIndexRouteImport } from './routes/portal.tickets.index'
@@ -165,6 +166,11 @@ const AdminLeadsRoute = AdminLeadsRouteImport.update({
   path: '/admin/leads',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminInvoicesRoute = AdminInvoicesRouteImport.update({
+  id: '/admin/invoices',
+  path: '/admin/invoices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminClientsRoute = AdminClientsRouteImport.update({
   id: '/admin/clients',
   path: '/admin/clients',
@@ -235,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
@@ -272,6 +279,7 @@ export interface FileRoutesByTo {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
@@ -310,6 +318,7 @@ export interface FileRoutesById {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/invoices': typeof AdminInvoicesRoute
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
@@ -349,6 +358,7 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
@@ -386,6 +396,7 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
@@ -423,6 +434,7 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
@@ -461,6 +473,7 @@ export interface RootRouteChildren {
   TestimonialsRoute: typeof TestimonialsRoute
   AdminBlogRoute: typeof AdminBlogRoute
   AdminClientsRoute: typeof AdminClientsRouteWithChildren
+  AdminInvoicesRoute: typeof AdminInvoicesRoute
   AdminLeadsRoute: typeof AdminLeadsRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   AdminOrdersRoute: typeof AdminOrdersRouteWithChildren
@@ -651,6 +664,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLeadsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/invoices': {
+      id: '/admin/invoices'
+      path: '/admin/invoices'
+      fullPath: '/admin/invoices'
+      preLoaderRoute: typeof AdminInvoicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/clients': {
       id: '/admin/clients'
       path: '/admin/clients'
@@ -793,6 +813,7 @@ const rootRouteChildren: RootRouteChildren = {
   TestimonialsRoute: TestimonialsRoute,
   AdminBlogRoute: AdminBlogRoute,
   AdminClientsRoute: AdminClientsRouteWithChildren,
+  AdminInvoicesRoute: AdminInvoicesRoute,
   AdminLeadsRoute: AdminLeadsRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   AdminOrdersRoute: AdminOrdersRouteWithChildren,
