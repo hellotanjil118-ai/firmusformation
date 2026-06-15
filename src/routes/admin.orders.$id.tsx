@@ -12,6 +12,7 @@ export const Route = createFileRoute("/admin/orders/$id")({
 
 type Stage = { id: string; order_id: string; name: string; description: string | null; order_index: number; status: StageStatus; completed_at: string | null; notes: string | null };
 type Msg = { id: string; sender_type: string; body: string; created_at: string };
+type Doc = { id: string; name: string; file_path: string; file_size: number | null; mime_type: string | null; uploader_type: string; client_visible: boolean; created_at: string };
 type Order = {
   id: string; client_id: string; package_name: string; price: number; currency: string;
   status: OrderStatus; notes: string | null; due_at: string | null; started_at: string | null;
