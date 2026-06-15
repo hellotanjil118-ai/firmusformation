@@ -44,6 +44,7 @@ import { Route as PortalOrdersIdRouteImport } from './routes/portal.orders.$id'
 import { Route as AdminTicketsIdRouteImport } from './routes/admin.tickets.$id'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
 import { Route as AdminLeadsIdRouteImport } from './routes/admin.leads.$id'
+import { Route as AdminInvoicesIdRouteImport } from './routes/admin.invoices.$id'
 import { Route as AdminClientsIdRouteImport } from './routes/admin.clients.$id'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
@@ -221,6 +222,11 @@ const AdminLeadsIdRoute = AdminLeadsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminLeadsRoute,
 } as any)
+const AdminInvoicesIdRoute = AdminInvoicesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminInvoicesRoute,
+} as any)
 const AdminClientsIdRoute = AdminClientsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -241,7 +247,7 @@ export interface FileRoutesByFullPath {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
-  '/admin/invoices': typeof AdminInvoicesRoute
+  '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
@@ -256,6 +262,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/invoices/$id': typeof AdminInvoicesIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/tickets/$id': typeof AdminTicketsIdRoute
@@ -279,7 +286,7 @@ export interface FileRoutesByTo {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
-  '/admin/invoices': typeof AdminInvoicesRoute
+  '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
@@ -294,6 +301,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/portal': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/invoices/$id': typeof AdminInvoicesIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/tickets/$id': typeof AdminTicketsIdRoute
@@ -318,7 +326,7 @@ export interface FileRoutesById {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
-  '/admin/invoices': typeof AdminInvoicesRoute
+  '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
@@ -333,6 +341,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/invoices/$id': typeof AdminInvoicesIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/tickets/$id': typeof AdminTicketsIdRoute
@@ -373,6 +382,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/portal/'
     | '/admin/clients/$id'
+    | '/admin/invoices/$id'
     | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/tickets/$id'
@@ -411,6 +421,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/portal'
     | '/admin/clients/$id'
+    | '/admin/invoices/$id'
     | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/tickets/$id'
@@ -449,6 +460,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/portal/'
     | '/admin/clients/$id'
+    | '/admin/invoices/$id'
     | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/tickets/$id'
@@ -473,7 +485,7 @@ export interface RootRouteChildren {
   TestimonialsRoute: typeof TestimonialsRoute
   AdminBlogRoute: typeof AdminBlogRoute
   AdminClientsRoute: typeof AdminClientsRouteWithChildren
-  AdminInvoicesRoute: typeof AdminInvoicesRoute
+  AdminInvoicesRoute: typeof AdminInvoicesRouteWithChildren
   AdminLeadsRoute: typeof AdminLeadsRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   AdminOrdersRoute: typeof AdminOrdersRouteWithChildren
@@ -741,6 +753,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLeadsIdRouteImport
       parentRoute: typeof AdminLeadsRoute
     }
+    '/admin/invoices/$id': {
+      id: '/admin/invoices/$id'
+      path: '/$id'
+      fullPath: '/admin/invoices/$id'
+      preLoaderRoute: typeof AdminInvoicesIdRouteImport
+      parentRoute: typeof AdminInvoicesRoute
+    }
     '/admin/clients/$id': {
       id: '/admin/clients/$id'
       path: '/$id'
@@ -761,6 +780,18 @@ const AdminClientsRouteChildren: AdminClientsRouteChildren = {
 
 const AdminClientsRouteWithChildren = AdminClientsRoute._addFileChildren(
   AdminClientsRouteChildren,
+)
+
+interface AdminInvoicesRouteChildren {
+  AdminInvoicesIdRoute: typeof AdminInvoicesIdRoute
+}
+
+const AdminInvoicesRouteChildren: AdminInvoicesRouteChildren = {
+  AdminInvoicesIdRoute: AdminInvoicesIdRoute,
+}
+
+const AdminInvoicesRouteWithChildren = AdminInvoicesRoute._addFileChildren(
+  AdminInvoicesRouteChildren,
 )
 
 interface AdminLeadsRouteChildren {
@@ -813,7 +844,7 @@ const rootRouteChildren: RootRouteChildren = {
   TestimonialsRoute: TestimonialsRoute,
   AdminBlogRoute: AdminBlogRoute,
   AdminClientsRoute: AdminClientsRouteWithChildren,
-  AdminInvoicesRoute: AdminInvoicesRoute,
+  AdminInvoicesRoute: AdminInvoicesRouteWithChildren,
   AdminLeadsRoute: AdminLeadsRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   AdminOrdersRoute: AdminOrdersRouteWithChildren,

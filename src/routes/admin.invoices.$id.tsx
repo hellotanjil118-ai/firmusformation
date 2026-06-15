@@ -77,7 +77,7 @@ function InvoiceEditor() {
       items: inv.items,
     };
     if (isNew) {
-      const { data, error } = await supabase.from("invoices").insert(payload).select().single();
+      const { data, error } = await supabase.from("invoices").insert(payload as never).select().single();
       setSaving(false);
       if (error) return toast.error(error.message);
       toast.success("Invoice created");
