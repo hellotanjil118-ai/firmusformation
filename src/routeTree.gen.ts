@@ -33,6 +33,7 @@ import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminInvoicesRouteImport } from './routes/admin.invoices'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as PortalTicketsIndexRouteImport } from './routes/portal.tickets.index'
@@ -40,9 +41,11 @@ import { Route as PortalOrdersIndexRouteImport } from './routes/portal.orders.in
 import { Route as PortalTicketsIdRouteImport } from './routes/portal.tickets.$id'
 import { Route as PortalOrdersNewRouteImport } from './routes/portal.orders.new'
 import { Route as PortalOrdersIdRouteImport } from './routes/portal.orders.$id'
+import { Route as PortalInvoicesIdRouteImport } from './routes/portal.invoices.$id'
 import { Route as AdminTicketsIdRouteImport } from './routes/admin.tickets.$id'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
 import { Route as AdminLeadsIdRouteImport } from './routes/admin.leads.$id'
+import { Route as AdminInvoicesIdRouteImport } from './routes/admin.invoices.$id'
 import { Route as AdminClientsIdRouteImport } from './routes/admin.clients.$id'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
@@ -165,6 +168,11 @@ const AdminLeadsRoute = AdminLeadsRouteImport.update({
   path: '/admin/leads',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminInvoicesRoute = AdminInvoicesRouteImport.update({
+  id: '/admin/invoices',
+  path: '/admin/invoices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminClientsRoute = AdminClientsRouteImport.update({
   id: '/admin/clients',
   path: '/admin/clients',
@@ -200,6 +208,11 @@ const PortalOrdersIdRoute = PortalOrdersIdRouteImport.update({
   path: '/portal/orders/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalInvoicesIdRoute = PortalInvoicesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => PortalInvoicesRoute,
+} as any)
 const AdminTicketsIdRoute = AdminTicketsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -214,6 +227,11 @@ const AdminLeadsIdRoute = AdminLeadsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => AdminLeadsRoute,
+} as any)
+const AdminInvoicesIdRoute = AdminInvoicesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminInvoicesRoute,
 } as any)
 const AdminClientsIdRoute = AdminClientsIdRouteImport.update({
   id: '/$id',
@@ -235,6 +253,7 @@ export interface FileRoutesByFullPath {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
@@ -242,16 +261,18 @@ export interface FileRoutesByFullPath {
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/tickets': typeof AdminTicketsRouteWithChildren
-  '/portal/invoices': typeof PortalInvoicesRoute
+  '/portal/invoices': typeof PortalInvoicesRouteWithChildren
   '/portal/login': typeof PortalLoginRoute
   '/portal/profile': typeof PortalProfileRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/invoices/$id': typeof AdminInvoicesIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/tickets/$id': typeof AdminTicketsIdRoute
+  '/portal/invoices/$id': typeof PortalInvoicesIdRoute
   '/portal/orders/$id': typeof PortalOrdersIdRoute
   '/portal/orders/new': typeof PortalOrdersNewRoute
   '/portal/tickets/$id': typeof PortalTicketsIdRoute
@@ -272,6 +293,7 @@ export interface FileRoutesByTo {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
@@ -279,16 +301,18 @@ export interface FileRoutesByTo {
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/tickets': typeof AdminTicketsRouteWithChildren
-  '/portal/invoices': typeof PortalInvoicesRoute
+  '/portal/invoices': typeof PortalInvoicesRouteWithChildren
   '/portal/login': typeof PortalLoginRoute
   '/portal/profile': typeof PortalProfileRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin': typeof AdminIndexRoute
   '/portal': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/invoices/$id': typeof AdminInvoicesIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/tickets/$id': typeof AdminTicketsIdRoute
+  '/portal/invoices/$id': typeof PortalInvoicesIdRoute
   '/portal/orders/$id': typeof PortalOrdersIdRoute
   '/portal/orders/new': typeof PortalOrdersNewRoute
   '/portal/tickets/$id': typeof PortalTicketsIdRoute
@@ -310,6 +334,7 @@ export interface FileRoutesById {
   '/testimonials': typeof TestimonialsRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
@@ -317,16 +342,18 @@ export interface FileRoutesById {
   '/admin/services': typeof AdminServicesRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/tickets': typeof AdminTicketsRouteWithChildren
-  '/portal/invoices': typeof PortalInvoicesRoute
+  '/portal/invoices': typeof PortalInvoicesRouteWithChildren
   '/portal/login': typeof PortalLoginRoute
   '/portal/profile': typeof PortalProfileRoute
   '/services_/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/invoices/$id': typeof AdminInvoicesIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/tickets/$id': typeof AdminTicketsIdRoute
+  '/portal/invoices/$id': typeof PortalInvoicesIdRoute
   '/portal/orders/$id': typeof PortalOrdersIdRoute
   '/portal/orders/new': typeof PortalOrdersNewRoute
   '/portal/tickets/$id': typeof PortalTicketsIdRoute
@@ -349,6 +376,7 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
@@ -363,9 +391,11 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/portal/'
     | '/admin/clients/$id'
+    | '/admin/invoices/$id'
     | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/tickets/$id'
+    | '/portal/invoices/$id'
     | '/portal/orders/$id'
     | '/portal/orders/new'
     | '/portal/tickets/$id'
@@ -386,6 +416,7 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
@@ -400,9 +431,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/portal'
     | '/admin/clients/$id'
+    | '/admin/invoices/$id'
     | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/tickets/$id'
+    | '/portal/invoices/$id'
     | '/portal/orders/$id'
     | '/portal/orders/new'
     | '/portal/tickets/$id'
@@ -423,6 +456,7 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
     | '/admin/orders'
@@ -437,9 +471,11 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/portal/'
     | '/admin/clients/$id'
+    | '/admin/invoices/$id'
     | '/admin/leads/$id'
     | '/admin/orders/$id'
     | '/admin/tickets/$id'
+    | '/portal/invoices/$id'
     | '/portal/orders/$id'
     | '/portal/orders/new'
     | '/portal/tickets/$id'
@@ -461,6 +497,7 @@ export interface RootRouteChildren {
   TestimonialsRoute: typeof TestimonialsRoute
   AdminBlogRoute: typeof AdminBlogRoute
   AdminClientsRoute: typeof AdminClientsRouteWithChildren
+  AdminInvoicesRoute: typeof AdminInvoicesRouteWithChildren
   AdminLeadsRoute: typeof AdminLeadsRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   AdminOrdersRoute: typeof AdminOrdersRouteWithChildren
@@ -468,7 +505,7 @@ export interface RootRouteChildren {
   AdminServicesRoute: typeof AdminServicesRoute
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminTicketsRoute: typeof AdminTicketsRouteWithChildren
-  PortalInvoicesRoute: typeof PortalInvoicesRoute
+  PortalInvoicesRoute: typeof PortalInvoicesRouteWithChildren
   PortalLoginRoute: typeof PortalLoginRoute
   PortalProfileRoute: typeof PortalProfileRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
@@ -651,6 +688,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLeadsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/invoices': {
+      id: '/admin/invoices'
+      path: '/admin/invoices'
+      fullPath: '/admin/invoices'
+      preLoaderRoute: typeof AdminInvoicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/clients': {
       id: '/admin/clients'
       path: '/admin/clients'
@@ -700,6 +744,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalOrdersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/invoices/$id': {
+      id: '/portal/invoices/$id'
+      path: '/$id'
+      fullPath: '/portal/invoices/$id'
+      preLoaderRoute: typeof PortalInvoicesIdRouteImport
+      parentRoute: typeof PortalInvoicesRoute
+    }
     '/admin/tickets/$id': {
       id: '/admin/tickets/$id'
       path: '/$id'
@@ -721,6 +772,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLeadsIdRouteImport
       parentRoute: typeof AdminLeadsRoute
     }
+    '/admin/invoices/$id': {
+      id: '/admin/invoices/$id'
+      path: '/$id'
+      fullPath: '/admin/invoices/$id'
+      preLoaderRoute: typeof AdminInvoicesIdRouteImport
+      parentRoute: typeof AdminInvoicesRoute
+    }
     '/admin/clients/$id': {
       id: '/admin/clients/$id'
       path: '/$id'
@@ -741,6 +799,18 @@ const AdminClientsRouteChildren: AdminClientsRouteChildren = {
 
 const AdminClientsRouteWithChildren = AdminClientsRoute._addFileChildren(
   AdminClientsRouteChildren,
+)
+
+interface AdminInvoicesRouteChildren {
+  AdminInvoicesIdRoute: typeof AdminInvoicesIdRoute
+}
+
+const AdminInvoicesRouteChildren: AdminInvoicesRouteChildren = {
+  AdminInvoicesIdRoute: AdminInvoicesIdRoute,
+}
+
+const AdminInvoicesRouteWithChildren = AdminInvoicesRoute._addFileChildren(
+  AdminInvoicesRouteChildren,
 )
 
 interface AdminLeadsRouteChildren {
@@ -779,6 +849,18 @@ const AdminTicketsRouteWithChildren = AdminTicketsRoute._addFileChildren(
   AdminTicketsRouteChildren,
 )
 
+interface PortalInvoicesRouteChildren {
+  PortalInvoicesIdRoute: typeof PortalInvoicesIdRoute
+}
+
+const PortalInvoicesRouteChildren: PortalInvoicesRouteChildren = {
+  PortalInvoicesIdRoute: PortalInvoicesIdRoute,
+}
+
+const PortalInvoicesRouteWithChildren = PortalInvoicesRoute._addFileChildren(
+  PortalInvoicesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -793,6 +875,7 @@ const rootRouteChildren: RootRouteChildren = {
   TestimonialsRoute: TestimonialsRoute,
   AdminBlogRoute: AdminBlogRoute,
   AdminClientsRoute: AdminClientsRouteWithChildren,
+  AdminInvoicesRoute: AdminInvoicesRouteWithChildren,
   AdminLeadsRoute: AdminLeadsRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   AdminOrdersRoute: AdminOrdersRouteWithChildren,
@@ -800,7 +883,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminServicesRoute: AdminServicesRoute,
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminTicketsRoute: AdminTicketsRouteWithChildren,
-  PortalInvoicesRoute: PortalInvoicesRoute,
+  PortalInvoicesRoute: PortalInvoicesRouteWithChildren,
   PortalLoginRoute: PortalLoginRoute,
   PortalProfileRoute: PortalProfileRoute,
   ServicesSlugRoute: ServicesSlugRoute,

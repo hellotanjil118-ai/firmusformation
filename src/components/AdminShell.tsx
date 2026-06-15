@@ -14,6 +14,7 @@ import {
   ExternalLink,
   ClipboardList,
   LifeBuoy,
+  Receipt,
 } from "lucide-react";
 
 const items: { to: string; label: string; icon: typeof Inbox; exact?: boolean }[] = [
@@ -21,6 +22,7 @@ const items: { to: string; label: string; icon: typeof Inbox; exact?: boolean }[
   { to: "/admin/leads", label: "Leads", icon: Inbox },
   { to: "/admin/clients", label: "Clients", icon: Users },
   { to: "/admin/orders", label: "Orders", icon: ClipboardList },
+  { to: "/admin/invoices", label: "Finance", icon: Receipt },
   { to: "/admin/tickets", label: "Support", icon: LifeBuoy },
   { to: "/admin/blog", label: "Blog", icon: FileText },
   { to: "/admin/testimonials", label: "Testimonials", icon: MessageSquare },
