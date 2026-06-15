@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AdminShell } from "@/components/AdminShell";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ArrowLeft, Plus, Trash2, Save, CheckCircle2, Circle, Clock, AlertOctagon, Send } from "lucide-react";
+import { Loader2, ArrowLeft, Plus, Trash2, CheckCircle2, Circle, Clock, AlertOctagon, Send, Upload, FileText, Download, Eye, EyeOff } from "lucide-react";
 import { ORDER_STATUSES, STATUS_LABEL, STAGE_STATUSES, type OrderStatus, type StageStatus } from "@/lib/orderConstants";
 
 export const Route = createFileRoute("/admin/orders/$id")({
