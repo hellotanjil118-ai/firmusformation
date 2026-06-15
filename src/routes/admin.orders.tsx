@@ -2,8 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { AdminShell } from "@/components/AdminShell";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Plus, Search, X, Save } from "lucide-react";
+import { Loader2, Plus, Search, X, Save, LayoutGrid, List } from "lucide-react";
 import { ORDER_STATUSES, STATUS_LABEL, STATUS_COLOR, DEFAULT_STAGES, type OrderStatus } from "@/lib/orderConstants";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/orders")({
   head: () => ({ meta: [{ title: "Admin — Orders" }, { name: "robots", content: "noindex" }] }),
@@ -23,11 +24,15 @@ type Order = {
   client?: Client;
 };
 
+const BOARD_STAGES: OrderStatus[] = ["pending", "in_progress", "waiting_documents", "under_review", "completed", "delivered"];
+
 function OrdersAdmin() {
   const [items, setItems] = useState<Order[] | null>(null);
   const [clients, setClients] = useState<Client[]>([]);
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [view, setView] = useState<"board" | "table">("board");
+  const [dragging, setDragging] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [draft, setDraft] = useState({ client_id: "", package_name: "", price: "0", currency: "USD", status: "pending" as OrderStatus, notes: "", due_at: "" });
   const [err, setErr] = useState<string | null>(null);
@@ -56,6 +61,18 @@ function OrdersAdmin() {
     });
   }, [items, q, statusFilter]);
 
+  const moveOrder = async (orderId: string, status: OrderStatus) => {
+    const prev = items;
+    setItems((cur) => cur?.map((o) => (o.id === orderId ? { ...o, status } : o)) ?? null);
+    const { error } = await supabase.from("orders").update({ status }).eq("id", orderId);
+    if (error) {
+      setItems(prev);
+      toast.error(error.message);
+    } else {
+      toast.success(`Moved to ${STATUS_LABEL[status]}`);
+    }
+  };
+
   const createOrder = async () => {
     if (!draft.client_id || !draft.package_name) { setErr("Client and package are required"); return; }
     setErr(null);
@@ -70,7 +87,6 @@ function OrdersAdmin() {
       started_at: new Date().toISOString(),
     }).select().single();
     if (error || !order) { setErr(error?.message ?? "Failed"); return; }
-    // seed default stages
     await supabase.from("order_stages").insert(
       DEFAULT_STAGES.map((name, i) => ({ order_id: order.id, name, order_index: i, status: "pending" }))
     );
@@ -86,16 +102,63 @@ function OrdersAdmin() {
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by package or client" className="w-full rounded-md border border-input bg-background py-2 pl-9 pr-3 text-sm" />
         </div>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="rounded-md border border-input bg-background px-3 py-2 text-sm">
-          <option value="all">All statuses</option>
-          {ORDER_STATUSES.map((s) => <option key={s} value={s}>{STATUS_LABEL[s]}</option>)}
-        </select>
+        {view === "table" && (
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="rounded-md border border-input bg-background px-3 py-2 text-sm">
+            <option value="all">All statuses</option>
+            {ORDER_STATUSES.map((s) => <option key={s} value={s}>{STATUS_LABEL[s]}</option>)}
+          </select>
+        )}
+        <div className="inline-flex rounded-md border border-input bg-background p-0.5 text-xs">
+          <button onClick={() => setView("board")} className={`inline-flex items-center gap-1 rounded px-2.5 py-1.5 ${view === "board" ? "bg-secondary text-foreground" : "text-muted-foreground"}`}><LayoutGrid size={13} /> Board</button>
+          <button onClick={() => setView("table")} className={`inline-flex items-center gap-1 rounded px-2.5 py-1.5 ${view === "table" ? "bg-secondary text-foreground" : "text-muted-foreground"}`}><List size={13} /> Table</button>
+        </div>
         <button onClick={() => setCreating(true)} className="inline-flex items-center gap-2 rounded-md bg-gradient-gold px-4 py-2 text-sm font-semibold text-gold-foreground shadow-gold">
           <Plus size={14} /> New Order
         </button>
       </div>
 
-      {filtered === null ? <Loader2 className="animate-spin" /> : filtered.length === 0 ? (
+      {filtered === null ? <Loader2 className="animate-spin" /> : view === "board" ? (
+        <div className="grid grid-cols-1 gap-3 overflow-x-auto md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {BOARD_STAGES.map((stage) => {
+            const stageOrders = filtered.filter((o) => o.status === stage);
+            const total = stageOrders.reduce((sum, o) => sum + Number(o.price || 0), 0);
+            return (
+              <div
+                key={stage}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={() => { if (dragging) { moveOrder(dragging, stage); setDragging(null); } }}
+                className="flex min-h-[300px] flex-col rounded-xl border border-border bg-secondary/30 p-3"
+              >
+                <div className="mb-3 flex items-center justify-between">
+                  <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{STATUS_LABEL[stage]}</h3>
+                  <span className="rounded-full bg-background px-2 py-0.5 text-[10px] font-medium">{stageOrders.length}</span>
+                </div>
+                <p className="mb-3 text-[11px] text-muted-foreground">${total.toLocaleString()}</p>
+                <div className="flex-1 space-y-2">
+                  {stageOrders.map((o) => (
+                    <Link
+                      key={o.id}
+                      to="/admin/orders/$id"
+                      params={{ id: o.id }}
+                      draggable
+                      onDragStart={() => setDragging(o.id)}
+                      onDragEnd={() => setDragging(null)}
+                      className={`block cursor-grab rounded-lg border border-border bg-card p-3 text-xs shadow-sm transition hover:border-primary ${dragging === o.id ? "opacity-40" : ""}`}
+                    >
+                      <p className="line-clamp-2 text-sm font-medium">{o.package_name}</p>
+                      <p className="mt-1 text-muted-foreground">{o.client?.name ?? "—"}</p>
+                      <div className="mt-2 flex items-center justify-between">
+                        <span className="font-semibold">{o.currency} {Number(o.price).toFixed(0)}</span>
+                        {o.due_at && <span className="text-[10px] text-muted-foreground">Due {new Date(o.due_at).toLocaleDateString()}</span>}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : filtered.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border p-12 text-center text-muted-foreground">No orders found.</div>
       ) : (
         <div className="overflow-hidden rounded-xl border border-border bg-card">

@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AdminShell } from "@/components/AdminShell";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ArrowLeft, Plus, Trash2, Save, CheckCircle2, Circle, Clock, AlertOctagon, Send } from "lucide-react";
+import { Loader2, ArrowLeft, Plus, Trash2, CheckCircle2, Circle, Clock, AlertOctagon, Send, Upload, FileText, Download, Eye, EyeOff } from "lucide-react";
 import { ORDER_STATUSES, STATUS_LABEL, STAGE_STATUSES, type OrderStatus, type StageStatus } from "@/lib/orderConstants";
 
 export const Route = createFileRoute("/admin/orders/$id")({
@@ -12,6 +12,7 @@ export const Route = createFileRoute("/admin/orders/$id")({
 
 type Stage = { id: string; order_id: string; name: string; description: string | null; order_index: number; status: StageStatus; completed_at: string | null; notes: string | null };
 type Msg = { id: string; sender_type: string; body: string; created_at: string };
+type Doc = { id: string; name: string; file_path: string; file_size: number | null; mime_type: string | null; uploader_type: string; client_visible: boolean; created_at: string };
 type Order = {
   id: string; client_id: string; package_name: string; price: number; currency: string;
   status: OrderStatus; notes: string | null; due_at: string | null; started_at: string | null;
@@ -27,6 +28,8 @@ function OrderDetail() {
   const [order, setOrder] = useState<Order | null>(null);
   const [stages, setStages] = useState<Stage[]>([]);
   const [messages, setMessages] = useState<Msg[]>([]);
+  const [docs, setDocs] = useState<Doc[]>([]);
+  const [uploading, setUploading] = useState(false);
   const [newMsg, setNewMsg] = useState("");
   const [newStage, setNewStage] = useState("");
 
@@ -37,8 +40,45 @@ function OrderDetail() {
     setStages((s as Stage[]) ?? []);
     const { data: m } = await supabase.from("order_messages").select("*").eq("order_id", id).order("created_at");
     setMessages((m as Msg[]) ?? []);
+    const { data: d } = await supabase.from("order_documents").select("*").eq("order_id", id).order("created_at", { ascending: false });
+    setDocs((d as Doc[]) ?? []);
   };
   useEffect(() => { load(); }, [id]);
+
+  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const { data: u } = await supabase.auth.getUser();
+    const path = `${id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
+    const { error: upErr } = await supabase.storage.from("order-documents").upload(path, file);
+    if (upErr) { alert(upErr.message); setUploading(false); return; }
+    await supabase.from("order_documents").insert({
+      order_id: id, name: file.name, file_path: path, file_size: file.size,
+      mime_type: file.type, uploader_type: "admin", uploaded_by: u.user?.id, client_visible: true,
+    });
+    setUploading(false);
+    e.target.value = "";
+    load();
+  };
+
+  const toggleDocVisibility = async (d: Doc) => {
+    await supabase.from("order_documents").update({ client_visible: !d.client_visible }).eq("id", d.id);
+    load();
+  };
+
+  const deleteDoc = async (d: Doc) => {
+    if (!confirm(`Delete ${d.name}?`)) return;
+    await supabase.storage.from("order-documents").remove([d.file_path]);
+    await supabase.from("order_documents").delete().eq("id", d.id);
+    load();
+  };
+
+  const downloadDoc = async (d: Doc) => {
+    const { data, error } = await supabase.storage.from("order-documents").createSignedUrl(d.file_path, 60);
+    if (error || !data) return alert(error?.message ?? "Failed");
+    window.open(data.signedUrl, "_blank");
+  };
 
   const updateOrder = async (patch: Partial<Omit<Order, "client">>) => {
     await supabase.from("orders").update(patch).eq("id", id);
@@ -174,6 +214,29 @@ function OrderDetail() {
                 <label className="mb-1 block text-xs text-muted-foreground">Internal Notes</label>
                 <textarea value={order.notes || ""} onChange={(e) => setOrder({ ...order, notes: e.target.value })} onBlur={(e) => updateOrder({ notes: e.target.value })} rows={4} className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-sm" />
               </div>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-border bg-card p-6">
+            <h2 className="mb-3 font-display text-lg">Documents</h2>
+            <label className={`mb-3 flex cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-border px-3 py-3 text-xs hover:bg-secondary ${uploading ? "opacity-60" : ""}`}>
+              {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+              <span>{uploading ? "Uploading…" : "Upload document"}</span>
+              <input type="file" className="hidden" onChange={uploadFile} disabled={uploading} />
+            </label>
+            <div className="space-y-2">
+              {docs.length === 0 ? <p className="text-xs text-muted-foreground">No documents yet.</p> : docs.map((d) => (
+                <div key={d.id} className="flex items-center gap-2 rounded-md border border-border p-2 text-xs">
+                  <FileText size={14} className="shrink-0 text-muted-foreground" />
+                  <div className="flex-1 truncate">
+                    <p className="truncate font-medium">{d.name}</p>
+                    <p className="text-[10px] text-muted-foreground">{d.uploader_type === "admin" ? "You" : "Client"} · {new Date(d.created_at).toLocaleDateString()}{!d.client_visible && " · Hidden"}</p>
+                  </div>
+                  <button onClick={() => toggleDocVisibility(d)} title={d.client_visible ? "Hide from client" : "Show to client"} className="text-muted-foreground hover:text-foreground">{d.client_visible ? <Eye size={14} /> : <EyeOff size={14} />}</button>
+                  <button onClick={() => downloadDoc(d)} className="text-muted-foreground hover:text-foreground"><Download size={14} /></button>
+                  <button onClick={() => deleteDoc(d)} className="text-muted-foreground hover:text-destructive"><Trash2 size={14} /></button>
+                </div>
+              ))}
             </div>
           </div>
 
