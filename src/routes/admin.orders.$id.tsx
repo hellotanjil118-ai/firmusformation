@@ -28,6 +28,8 @@ function OrderDetail() {
   const [order, setOrder] = useState<Order | null>(null);
   const [stages, setStages] = useState<Stage[]>([]);
   const [messages, setMessages] = useState<Msg[]>([]);
+  const [docs, setDocs] = useState<Doc[]>([]);
+  const [uploading, setUploading] = useState(false);
   const [newMsg, setNewMsg] = useState("");
   const [newStage, setNewStage] = useState("");
 
