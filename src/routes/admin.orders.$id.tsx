@@ -40,8 +40,45 @@ function OrderDetail() {
     setStages((s as Stage[]) ?? []);
     const { data: m } = await supabase.from("order_messages").select("*").eq("order_id", id).order("created_at");
     setMessages((m as Msg[]) ?? []);
+    const { data: d } = await supabase.from("order_documents").select("*").eq("order_id", id).order("created_at", { ascending: false });
+    setDocs((d as Doc[]) ?? []);
   };
   useEffect(() => { load(); }, [id]);
+
+  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const { data: u } = await supabase.auth.getUser();
+    const path = `${id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
+    const { error: upErr } = await supabase.storage.from("order-documents").upload(path, file);
+    if (upErr) { alert(upErr.message); setUploading(false); return; }
+    await supabase.from("order_documents").insert({
+      order_id: id, name: file.name, file_path: path, file_size: file.size,
+      mime_type: file.type, uploader_type: "admin", uploaded_by: u.user?.id, client_visible: true,
+    });
+    setUploading(false);
+    e.target.value = "";
+    load();
+  };
+
+  const toggleDocVisibility = async (d: Doc) => {
+    await supabase.from("order_documents").update({ client_visible: !d.client_visible }).eq("id", d.id);
+    load();
+  };
+
+  const deleteDoc = async (d: Doc) => {
+    if (!confirm(`Delete ${d.name}?`)) return;
+    await supabase.storage.from("order-documents").remove([d.file_path]);
+    await supabase.from("order_documents").delete().eq("id", d.id);
+    load();
+  };
+
+  const downloadDoc = async (d: Doc) => {
+    const { data, error } = await supabase.storage.from("order-documents").createSignedUrl(d.file_path, 60);
+    if (error || !data) return alert(error?.message ?? "Failed");
+    window.open(data.signedUrl, "_blank");
+  };
 
   const updateOrder = async (patch: Partial<Omit<Order, "client">>) => {
     await supabase.from("orders").update(patch).eq("id", id);
