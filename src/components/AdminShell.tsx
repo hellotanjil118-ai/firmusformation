@@ -1,6 +1,7 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { NotificationBell } from "@/components/NotificationBell";
 import {
   LayoutDashboard,
   Inbox,
@@ -15,6 +16,7 @@ import {
   ClipboardList,
   LifeBuoy,
   Receipt,
+  Calendar,
 } from "lucide-react";
 
 const items: { to: string; label: string; icon: typeof Inbox; exact?: boolean }[] = [
@@ -24,6 +26,7 @@ const items: { to: string; label: string; icon: typeof Inbox; exact?: boolean }[
   { to: "/admin/orders", label: "Orders", icon: ClipboardList },
   { to: "/admin/invoices", label: "Finance", icon: Receipt },
   { to: "/admin/tickets", label: "Support", icon: LifeBuoy },
+  { to: "/admin/meetings", label: "Meetings", icon: Calendar },
   { to: "/admin/blog", label: "Blog", icon: FileText },
   { to: "/admin/testimonials", label: "Testimonials", icon: MessageSquare },
   { to: "/admin/services", label: "Services", icon: Briefcase },
@@ -95,13 +98,16 @@ export function AdminShell({ children, title, subtitle }: { children: ReactNode;
         </div>
       </aside>
       <main className="flex-1 overflow-auto">
-        <header className="sticky top-0 z-10 border-b border-border bg-card/80 px-6 py-4 backdrop-blur">
-          <h1 className="font-display text-2xl">{title}</h1>
-          {subtitle ? (
-            <p className="text-xs text-muted-foreground">{subtitle}</p>
-          ) : (
-            <p className="text-xs text-muted-foreground">Signed in as {user.email}</p>
-          )}
+        <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-border bg-card/80 px-6 py-4 backdrop-blur">
+          <div className="min-w-0">
+            <h1 className="font-display text-2xl">{title}</h1>
+            {subtitle ? (
+              <p className="text-xs text-muted-foreground">{subtitle}</p>
+            ) : (
+              <p className="text-xs text-muted-foreground">Signed in as {user.email}</p>
+            )}
+          </div>
+          <NotificationBell />
         </header>
         <div className="p-6">{children}</div>
       </main>
