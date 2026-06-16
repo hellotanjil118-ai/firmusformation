@@ -330,6 +330,65 @@ export type Database = {
         }
         Relationships: []
       }
+      meetings: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          description: string | null
+          duration_min: number
+          id: string
+          location: string | null
+          meeting_type: string
+          meeting_url: string | null
+          notes: string | null
+          organizer_id: string | null
+          scheduled_at: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          description?: string | null
+          duration_min?: number
+          id?: string
+          location?: string | null
+          meeting_type?: string
+          meeting_url?: string | null
+          notes?: string | null
+          organizer_id?: string | null
+          scheduled_at: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          description?: string | null
+          duration_min?: number
+          id?: string
+          location?: string | null
+          meeting_type?: string
+          meeting_url?: string | null
+          notes?: string | null
+          organizer_id?: string | null
+          scheduled_at?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meetings_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           body: string | null
