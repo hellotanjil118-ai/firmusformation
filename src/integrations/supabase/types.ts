@@ -122,6 +122,119 @@ export type Database = {
         }
         Relationships: []
       }
+      departments: {
+        Row: {
+          code: string | null
+          color: string | null
+          created_at: string
+          description: string | null
+          head_user_id: string | null
+          icon: string | null
+          id: string
+          monthly_target: number | null
+          name: string
+          slug: string
+          sort_order: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          code?: string | null
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          head_user_id?: string | null
+          icon?: string | null
+          id?: string
+          monthly_target?: number | null
+          name: string
+          slug: string
+          sort_order?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string | null
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          head_user_id?: string | null
+          icon?: string | null
+          id?: string
+          monthly_target?: number | null
+          name?: string
+          slug?: string
+          sort_order?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      employees: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          department_id: string | null
+          email: string | null
+          employment_type: string
+          full_name: string
+          hourly_rate: number | null
+          id: string
+          joined_at: string | null
+          monthly_salary: number | null
+          notes: string | null
+          phone: string | null
+          status: string
+          title: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          department_id?: string | null
+          email?: string | null
+          employment_type?: string
+          full_name: string
+          hourly_rate?: number | null
+          id?: string
+          joined_at?: string | null
+          monthly_salary?: number | null
+          notes?: string | null
+          phone?: string | null
+          status?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          department_id?: string | null
+          email?: string | null
+          employment_type?: string
+          full_name?: string
+          hourly_rate?: number | null
+          id?: string
+          joined_at?: string | null
+          monthly_salary?: number | null
+          notes?: string | null
+          phone?: string | null
+          status?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employees_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invoices: {
         Row: {
           client_id: string
