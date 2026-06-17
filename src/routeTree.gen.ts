@@ -28,15 +28,25 @@ import { Route as PortalLoginRouteImport } from './routes/portal.login'
 import { Route as PortalInvoicesRouteImport } from './routes/portal.invoices'
 import { Route as AdminTicketsRouteImport } from './routes/admin.tickets'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
+import { Route as AdminTasksRouteImport } from './routes/admin.tasks'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminMeetingsRouteImport } from './routes/admin.meetings'
+import { Route as AdminMarketingRouteImport } from './routes/admin.marketing'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminInvoicesRouteImport } from './routes/admin.invoices'
+import { Route as AdminInboxRouteImport } from './routes/admin.inbox'
+import { Route as AdminEmployeesRouteImport } from './routes/admin.employees'
+import { Route as AdminDocumentsRouteImport } from './routes/admin.documents'
+import { Route as AdminDepartmentsRouteImport } from './routes/admin.departments'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
+import { Route as AdminAutomationRouteImport } from './routes/admin.automation'
+import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
+import { Route as AdminAiAccountantRouteImport } from './routes/admin.ai-accountant'
 import { Route as PortalTicketsIndexRouteImport } from './routes/portal.tickets.index'
 import { Route as PortalOrdersIndexRouteImport } from './routes/portal.orders.index'
 import { Route as PortalTicketsIdRouteImport } from './routes/portal.tickets.$id'
@@ -144,6 +154,16 @@ const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
   path: '/admin/testimonials',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminTasksRoute = AdminTasksRouteImport.update({
+  id: '/admin/tasks',
+  path: '/admin/tasks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/admin/settings',
+  path: '/admin/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminServicesRoute = AdminServicesRouteImport.update({
   id: '/admin/services',
   path: '/admin/services',
@@ -164,6 +184,11 @@ const AdminMeetingsRoute = AdminMeetingsRouteImport.update({
   path: '/admin/meetings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminMarketingRoute = AdminMarketingRouteImport.update({
+  id: '/admin/marketing',
+  path: '/admin/marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin/login',
   path: '/admin/login',
@@ -179,6 +204,26 @@ const AdminInvoicesRoute = AdminInvoicesRouteImport.update({
   path: '/admin/invoices',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminInboxRoute = AdminInboxRouteImport.update({
+  id: '/admin/inbox',
+  path: '/admin/inbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminEmployeesRoute = AdminEmployeesRouteImport.update({
+  id: '/admin/employees',
+  path: '/admin/employees',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDocumentsRoute = AdminDocumentsRouteImport.update({
+  id: '/admin/documents',
+  path: '/admin/documents',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDepartmentsRoute = AdminDepartmentsRouteImport.update({
+  id: '/admin/departments',
+  path: '/admin/departments',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminClientsRoute = AdminClientsRouteImport.update({
   id: '/admin/clients',
   path: '/admin/clients',
@@ -187,6 +232,21 @@ const AdminClientsRoute = AdminClientsRouteImport.update({
 const AdminBlogRoute = AdminBlogRouteImport.update({
   id: '/admin/blog',
   path: '/admin/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAutomationRoute = AdminAutomationRouteImport.update({
+  id: '/admin/automation',
+  path: '/admin/automation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
+  id: '/admin/analytics',
+  path: '/admin/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAiAccountantRoute = AdminAiAccountantRouteImport.update({
+  id: '/admin/ai-accountant',
+  path: '/admin/ai-accountant',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalTicketsIndexRoute = PortalTicketsIndexRouteImport.update({
@@ -257,15 +317,25 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
+  '/admin/ai-accountant': typeof AdminAiAccountantRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/automation': typeof AdminAutomationRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/departments': typeof AdminDepartmentsRoute
+  '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/employees': typeof AdminEmployeesRoute
+  '/admin/inbox': typeof AdminInboxRoute
   '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/admin/marketing': typeof AdminMarketingRoute
   '/admin/meetings': typeof AdminMeetingsRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/tasks': typeof AdminTasksRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/tickets': typeof AdminTicketsRouteWithChildren
   '/portal/invoices': typeof PortalInvoicesRouteWithChildren
@@ -298,15 +368,25 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
+  '/admin/ai-accountant': typeof AdminAiAccountantRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/automation': typeof AdminAutomationRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/departments': typeof AdminDepartmentsRoute
+  '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/employees': typeof AdminEmployeesRoute
+  '/admin/inbox': typeof AdminInboxRoute
   '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/admin/marketing': typeof AdminMarketingRoute
   '/admin/meetings': typeof AdminMeetingsRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/tasks': typeof AdminTasksRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/tickets': typeof AdminTicketsRouteWithChildren
   '/portal/invoices': typeof PortalInvoicesRouteWithChildren
@@ -340,15 +420,25 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/testimonials': typeof TestimonialsRoute
+  '/admin/ai-accountant': typeof AdminAiAccountantRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/automation': typeof AdminAutomationRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/departments': typeof AdminDepartmentsRoute
+  '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/employees': typeof AdminEmployeesRoute
+  '/admin/inbox': typeof AdminInboxRoute
   '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
+  '/admin/marketing': typeof AdminMarketingRoute
   '/admin/meetings': typeof AdminMeetingsRoute
   '/admin/orders': typeof AdminOrdersRouteWithChildren
   '/admin/pricing': typeof AdminPricingRoute
   '/admin/services': typeof AdminServicesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/tasks': typeof AdminTasksRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/tickets': typeof AdminTicketsRouteWithChildren
   '/portal/invoices': typeof PortalInvoicesRouteWithChildren
@@ -383,15 +473,25 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/testimonials'
+    | '/admin/ai-accountant'
+    | '/admin/analytics'
+    | '/admin/automation'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/departments'
+    | '/admin/documents'
+    | '/admin/employees'
+    | '/admin/inbox'
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
+    | '/admin/marketing'
     | '/admin/meetings'
     | '/admin/orders'
     | '/admin/pricing'
     | '/admin/services'
+    | '/admin/settings'
+    | '/admin/tasks'
     | '/admin/testimonials'
     | '/admin/tickets'
     | '/portal/invoices'
@@ -424,15 +524,25 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/testimonials'
+    | '/admin/ai-accountant'
+    | '/admin/analytics'
+    | '/admin/automation'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/departments'
+    | '/admin/documents'
+    | '/admin/employees'
+    | '/admin/inbox'
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
+    | '/admin/marketing'
     | '/admin/meetings'
     | '/admin/orders'
     | '/admin/pricing'
     | '/admin/services'
+    | '/admin/settings'
+    | '/admin/tasks'
     | '/admin/testimonials'
     | '/admin/tickets'
     | '/portal/invoices'
@@ -465,15 +575,25 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/testimonials'
+    | '/admin/ai-accountant'
+    | '/admin/analytics'
+    | '/admin/automation'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/departments'
+    | '/admin/documents'
+    | '/admin/employees'
+    | '/admin/inbox'
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
+    | '/admin/marketing'
     | '/admin/meetings'
     | '/admin/orders'
     | '/admin/pricing'
     | '/admin/services'
+    | '/admin/settings'
+    | '/admin/tasks'
     | '/admin/testimonials'
     | '/admin/tickets'
     | '/portal/invoices'
@@ -507,15 +627,25 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   TermsRoute: typeof TermsRoute
   TestimonialsRoute: typeof TestimonialsRoute
+  AdminAiAccountantRoute: typeof AdminAiAccountantRoute
+  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
+  AdminAutomationRoute: typeof AdminAutomationRoute
   AdminBlogRoute: typeof AdminBlogRoute
   AdminClientsRoute: typeof AdminClientsRouteWithChildren
+  AdminDepartmentsRoute: typeof AdminDepartmentsRoute
+  AdminDocumentsRoute: typeof AdminDocumentsRoute
+  AdminEmployeesRoute: typeof AdminEmployeesRoute
+  AdminInboxRoute: typeof AdminInboxRoute
   AdminInvoicesRoute: typeof AdminInvoicesRouteWithChildren
   AdminLeadsRoute: typeof AdminLeadsRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminMarketingRoute: typeof AdminMarketingRoute
   AdminMeetingsRoute: typeof AdminMeetingsRoute
   AdminOrdersRoute: typeof AdminOrdersRouteWithChildren
   AdminPricingRoute: typeof AdminPricingRoute
   AdminServicesRoute: typeof AdminServicesRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminTasksRoute: typeof AdminTasksRoute
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminTicketsRoute: typeof AdminTicketsRouteWithChildren
   PortalInvoicesRoute: typeof PortalInvoicesRouteWithChildren
@@ -666,6 +796,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTestimonialsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/tasks': {
+      id: '/admin/tasks'
+      path: '/admin/tasks'
+      fullPath: '/admin/tasks'
+      preLoaderRoute: typeof AdminTasksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/admin/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/services': {
       id: '/admin/services'
       path: '/admin/services'
@@ -694,6 +838,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMeetingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/marketing': {
+      id: '/admin/marketing'
+      path: '/admin/marketing'
+      fullPath: '/admin/marketing'
+      preLoaderRoute: typeof AdminMarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/admin/login'
@@ -715,6 +866,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInvoicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/inbox': {
+      id: '/admin/inbox'
+      path: '/admin/inbox'
+      fullPath: '/admin/inbox'
+      preLoaderRoute: typeof AdminInboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/employees': {
+      id: '/admin/employees'
+      path: '/admin/employees'
+      fullPath: '/admin/employees'
+      preLoaderRoute: typeof AdminEmployeesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/documents': {
+      id: '/admin/documents'
+      path: '/admin/documents'
+      fullPath: '/admin/documents'
+      preLoaderRoute: typeof AdminDocumentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/departments': {
+      id: '/admin/departments'
+      path: '/admin/departments'
+      fullPath: '/admin/departments'
+      preLoaderRoute: typeof AdminDepartmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/clients': {
       id: '/admin/clients'
       path: '/admin/clients'
@@ -727,6 +906,27 @@ declare module '@tanstack/react-router' {
       path: '/admin/blog'
       fullPath: '/admin/blog'
       preLoaderRoute: typeof AdminBlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/automation': {
+      id: '/admin/automation'
+      path: '/admin/automation'
+      fullPath: '/admin/automation'
+      preLoaderRoute: typeof AdminAutomationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/analytics': {
+      id: '/admin/analytics'
+      path: '/admin/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AdminAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/ai-accountant': {
+      id: '/admin/ai-accountant'
+      path: '/admin/ai-accountant'
+      fullPath: '/admin/ai-accountant'
+      preLoaderRoute: typeof AdminAiAccountantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/portal/tickets/': {
@@ -893,15 +1093,25 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   TermsRoute: TermsRoute,
   TestimonialsRoute: TestimonialsRoute,
+  AdminAiAccountantRoute: AdminAiAccountantRoute,
+  AdminAnalyticsRoute: AdminAnalyticsRoute,
+  AdminAutomationRoute: AdminAutomationRoute,
   AdminBlogRoute: AdminBlogRoute,
   AdminClientsRoute: AdminClientsRouteWithChildren,
+  AdminDepartmentsRoute: AdminDepartmentsRoute,
+  AdminDocumentsRoute: AdminDocumentsRoute,
+  AdminEmployeesRoute: AdminEmployeesRoute,
+  AdminInboxRoute: AdminInboxRoute,
   AdminInvoicesRoute: AdminInvoicesRouteWithChildren,
   AdminLeadsRoute: AdminLeadsRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
+  AdminMarketingRoute: AdminMarketingRoute,
   AdminMeetingsRoute: AdminMeetingsRoute,
   AdminOrdersRoute: AdminOrdersRouteWithChildren,
   AdminPricingRoute: AdminPricingRoute,
   AdminServicesRoute: AdminServicesRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminTasksRoute: AdminTasksRoute,
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminTicketsRoute: AdminTicketsRouteWithChildren,
   PortalInvoicesRoute: PortalInvoicesRouteWithChildren,
