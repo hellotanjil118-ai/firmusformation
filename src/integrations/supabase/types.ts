@@ -170,6 +170,70 @@ export type Database = {
         }
         Relationships: []
       }
+      employee_assignment_audit: {
+        Row: {
+          action: string
+          changed_by: string | null
+          changed_by_email: string | null
+          created_at: string
+          employee_id: string
+          employee_name: string | null
+          from_department_id: string | null
+          from_department_name: string | null
+          id: string
+          to_department_id: string | null
+          to_department_name: string | null
+        }
+        Insert: {
+          action?: string
+          changed_by?: string | null
+          changed_by_email?: string | null
+          created_at?: string
+          employee_id: string
+          employee_name?: string | null
+          from_department_id?: string | null
+          from_department_name?: string | null
+          id?: string
+          to_department_id?: string | null
+          to_department_name?: string | null
+        }
+        Update: {
+          action?: string
+          changed_by?: string | null
+          changed_by_email?: string | null
+          created_at?: string
+          employee_id?: string
+          employee_name?: string | null
+          from_department_id?: string | null
+          from_department_name?: string | null
+          id?: string
+          to_department_id?: string | null
+          to_department_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_assignment_audit_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_assignment_audit_from_department_id_fkey"
+            columns: ["from_department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_assignment_audit_to_department_id_fkey"
+            columns: ["to_department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employees: {
         Row: {
           avatar_url: string | null
