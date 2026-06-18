@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import {
-  Building2, Plus, Users, Target, TrendingUp, Pencil, Trash2, UserPlus,
+  Building2, Plus, Users, Target, TrendingUp, Pencil, Trash2, UserPlus, History, ArrowRight,
 } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
