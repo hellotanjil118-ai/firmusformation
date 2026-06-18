@@ -476,6 +476,49 @@ function Page() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Audit log dialog */}
+      <Dialog open={auditOpen} onOpenChange={setAuditOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <History className="w-5 h-5" /> Assignment audit log
+            </DialogTitle>
+          </DialogHeader>
+          <div className="overflow-auto -mx-6 px-6">
+            {auditLoading ? (
+              <div className="text-sm text-muted-foreground py-8 text-center">Loading…</div>
+            ) : audit.length === 0 ? (
+              <div className="text-sm text-muted-foreground py-8 text-center">
+                No assignment changes recorded yet.
+              </div>
+            ) : (
+              <div className="divide-y border rounded-lg">
+                {audit.map((a) => (
+                  <div key={a.id} className="p-3 text-sm flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <Badge variant={a.action === "unassign" ? "destructive" : a.action === "assign" ? "default" : "secondary"} className="text-[10px] uppercase">
+                      {a.action}
+                    </Badge>
+                    <span className="font-medium">{a.employee_name || "Unknown"}</span>
+                    <span className="flex items-center gap-1 text-muted-foreground">
+                      {a.from_department_name || "Unassigned"}
+                      <ArrowRight className="w-3 h-3" />
+                      {a.to_department_name || "Unassigned"}
+                    </span>
+                    <span className="ml-auto text-xs text-muted-foreground">
+                      {a.changed_by_email || "system"} · {new Date(a.created_at).toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={loadAudit}>Refresh</Button>
+            <Button onClick={() => setAuditOpen(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AdminShell>
   );
 }
