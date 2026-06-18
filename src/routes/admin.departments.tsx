@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import {
-  Building2, Plus, Users, Target, TrendingUp, Pencil, Trash2, UserPlus,
+  Building2, Plus, Users, Target, TrendingUp, Pencil, Trash2, UserPlus, History, ArrowRight,
 } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
@@ -53,6 +53,17 @@ const emptyDept = {
   color: "#6366f1", monthly_target: 0, status: "active",
 };
 
+type AuditEntry = {
+  id: string;
+  employee_id: string;
+  employee_name: string | null;
+  from_department_name: string | null;
+  to_department_name: string | null;
+  changed_by_email: string | null;
+  action: string;
+  created_at: string;
+};
+
 function Page() {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -62,10 +73,26 @@ function Page() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deptOpen, setDeptOpen] = useState(false);
   const [empOpen, setEmpOpen] = useState(false);
+  const [auditOpen, setAuditOpen] = useState(false);
+  const [audit, setAudit] = useState<AuditEntry[]>([]);
+  const [auditLoading, setAuditLoading] = useState(false);
   const [empForm, setEmpForm] = useState({
     full_name: "", email: "", title: "", department_id: "",
     monthly_salary: 0, status: "active",
   });
+
+  async function loadAudit() {
+    setAuditLoading(true);
+    const { data, error } = await supabase
+      .from("employee_assignment_audit" as never)
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(200);
+    if (error) toast.error(error.message);
+    setAudit((data as AuditEntry[] | null) || []);
+    setAuditLoading(false);
+  }
+  function openAudit() { setAuditOpen(true); loadAudit(); }
 
   async function load() {
     setLoading(true);
@@ -237,6 +264,9 @@ function Page() {
         <Button onClick={openCreateDept}><Plus className="w-4 h-4 mr-2" />New department</Button>
         <Button variant="outline" onClick={() => openAddEmployee()}>
           <UserPlus className="w-4 h-4 mr-2" />Add team member
+        </Button>
+        <Button variant="outline" onClick={openAudit}>
+          <History className="w-4 h-4 mr-2" />Assignment audit log
         </Button>
       </div>
 
@@ -443,6 +473,49 @@ function Page() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setEmpOpen(false)}>Cancel</Button>
             <Button onClick={saveEmployee}>Add member</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Audit log dialog */}
+      <Dialog open={auditOpen} onOpenChange={setAuditOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <History className="w-5 h-5" /> Assignment audit log
+            </DialogTitle>
+          </DialogHeader>
+          <div className="overflow-auto -mx-6 px-6">
+            {auditLoading ? (
+              <div className="text-sm text-muted-foreground py-8 text-center">Loading…</div>
+            ) : audit.length === 0 ? (
+              <div className="text-sm text-muted-foreground py-8 text-center">
+                No assignment changes recorded yet.
+              </div>
+            ) : (
+              <div className="divide-y border rounded-lg">
+                {audit.map((a) => (
+                  <div key={a.id} className="p-3 text-sm flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <Badge variant={a.action === "unassign" ? "destructive" : a.action === "assign" ? "default" : "secondary"} className="text-[10px] uppercase">
+                      {a.action}
+                    </Badge>
+                    <span className="font-medium">{a.employee_name || "Unknown"}</span>
+                    <span className="flex items-center gap-1 text-muted-foreground">
+                      {a.from_department_name || "Unassigned"}
+                      <ArrowRight className="w-3 h-3" />
+                      {a.to_department_name || "Unassigned"}
+                    </span>
+                    <span className="ml-auto text-xs text-muted-foreground">
+                      {a.changed_by_email || "system"} · {new Date(a.created_at).toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={loadAudit}>Refresh</Button>
+            <Button onClick={() => setAuditOpen(false)}>Close</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
