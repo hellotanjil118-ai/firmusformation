@@ -53,6 +53,17 @@ const emptyDept = {
   color: "#6366f1", monthly_target: 0, status: "active",
 };
 
+type AuditEntry = {
+  id: string;
+  employee_id: string;
+  employee_name: string | null;
+  from_department_name: string | null;
+  to_department_name: string | null;
+  changed_by_email: string | null;
+  action: string;
+  created_at: string;
+};
+
 function Page() {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -62,10 +73,26 @@ function Page() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deptOpen, setDeptOpen] = useState(false);
   const [empOpen, setEmpOpen] = useState(false);
+  const [auditOpen, setAuditOpen] = useState(false);
+  const [audit, setAudit] = useState<AuditEntry[]>([]);
+  const [auditLoading, setAuditLoading] = useState(false);
   const [empForm, setEmpForm] = useState({
     full_name: "", email: "", title: "", department_id: "",
     monthly_salary: 0, status: "active",
   });
+
+  async function loadAudit() {
+    setAuditLoading(true);
+    const { data, error } = await supabase
+      .from("employee_assignment_audit" as never)
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(200);
+    if (error) toast.error(error.message);
+    setAudit((data as AuditEntry[] | null) || []);
+    setAuditLoading(false);
+  }
+  function openAudit() { setAuditOpen(true); loadAudit(); }
 
   async function load() {
     setLoading(true);
