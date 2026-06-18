@@ -265,6 +265,9 @@ function Page() {
         <Button variant="outline" onClick={() => openAddEmployee()}>
           <UserPlus className="w-4 h-4 mr-2" />Add team member
         </Button>
+        <Button variant="outline" onClick={openAudit}>
+          <History className="w-4 h-4 mr-2" />Assignment audit log
+        </Button>
       </div>
 
       <div className="grid lg:grid-cols-[320px_1fr] gap-4">
