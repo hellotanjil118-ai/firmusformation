@@ -111,7 +111,14 @@ function Page() {
     const counts: Record<string, number> = {};
     rows.forEach((r) => (counts[r.action] = (counts[r.action] ?? 0) + 1));
     const actors = new Set(rows.map((r) => r.changed_by_email).filter(Boolean));
-    return { total: rows.length, actors: actors.size, ...counts };
+    return {
+      total: rows.length,
+      actors: actors.size,
+      assign: counts.assign ?? 0,
+      reassign: counts.reassign ?? 0,
+      unassign: counts.unassign ?? 0,
+      status_change: counts.status_change ?? 0,
+    };
   }, [rows]);
 
   function exportCsv() {

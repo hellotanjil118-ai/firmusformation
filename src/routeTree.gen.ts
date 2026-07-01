@@ -57,6 +57,7 @@ import { Route as AdminTicketsIdRouteImport } from './routes/admin.tickets.$id'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
 import { Route as AdminLeadsIdRouteImport } from './routes/admin.leads.$id'
 import { Route as AdminInvoicesIdRouteImport } from './routes/admin.invoices.$id'
+import { Route as AdminEmployeesAuditRouteImport } from './routes/admin.employees_.audit'
 import { Route as AdminClientsIdRouteImport } from './routes/admin.clients.$id'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
@@ -299,6 +300,11 @@ const AdminInvoicesIdRoute = AdminInvoicesIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminInvoicesRoute,
 } as any)
+const AdminEmployeesAuditRoute = AdminEmployeesAuditRouteImport.update({
+  id: '/admin/employees_/audit',
+  path: '/admin/employees/audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminClientsIdRoute = AdminClientsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -345,6 +351,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/employees/audit': typeof AdminEmployeesAuditRoute
   '/admin/invoices/$id': typeof AdminInvoicesIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
@@ -396,6 +403,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/portal': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/employees/audit': typeof AdminEmployeesAuditRoute
   '/admin/invoices/$id': typeof AdminInvoicesIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
@@ -448,6 +456,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/employees_/audit': typeof AdminEmployeesAuditRoute
   '/admin/invoices/$id': typeof AdminInvoicesIdRoute
   '/admin/leads/$id': typeof AdminLeadsIdRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
@@ -501,6 +510,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/portal/'
     | '/admin/clients/$id'
+    | '/admin/employees/audit'
     | '/admin/invoices/$id'
     | '/admin/leads/$id'
     | '/admin/orders/$id'
@@ -552,6 +562,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/portal'
     | '/admin/clients/$id'
+    | '/admin/employees/audit'
     | '/admin/invoices/$id'
     | '/admin/leads/$id'
     | '/admin/orders/$id'
@@ -603,6 +614,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/portal/'
     | '/admin/clients/$id'
+    | '/admin/employees_/audit'
     | '/admin/invoices/$id'
     | '/admin/leads/$id'
     | '/admin/orders/$id'
@@ -654,6 +666,7 @@ export interface RootRouteChildren {
   ServicesSlugRoute: typeof ServicesSlugRoute
   AdminIndexRoute: typeof AdminIndexRoute
   PortalIndexRoute: typeof PortalIndexRoute
+  AdminEmployeesAuditRoute: typeof AdminEmployeesAuditRoute
   PortalOrdersIdRoute: typeof PortalOrdersIdRoute
   PortalOrdersNewRoute: typeof PortalOrdersNewRoute
   PortalTicketsIdRoute: typeof PortalTicketsIdRoute
@@ -999,6 +1012,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInvoicesIdRouteImport
       parentRoute: typeof AdminInvoicesRoute
     }
+    '/admin/employees_/audit': {
+      id: '/admin/employees_/audit'
+      path: '/admin/employees/audit'
+      fullPath: '/admin/employees/audit'
+      preLoaderRoute: typeof AdminEmployeesAuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/clients/$id': {
       id: '/admin/clients/$id'
       path: '/$id'
@@ -1120,6 +1140,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesSlugRoute: ServicesSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
   PortalIndexRoute: PortalIndexRoute,
+  AdminEmployeesAuditRoute: AdminEmployeesAuditRoute,
   PortalOrdersIdRoute: PortalOrdersIdRoute,
   PortalOrdersNewRoute: PortalOrdersNewRoute,
   PortalTicketsIdRoute: PortalTicketsIdRoute,
