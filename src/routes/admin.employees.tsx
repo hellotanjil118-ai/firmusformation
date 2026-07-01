@@ -19,6 +19,7 @@ import {
   BadgeDollarSign,
   Pencil,
   Trash2,
+  History,
 } from "lucide-react";
 import {
   BarChart,
