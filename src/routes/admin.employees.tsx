@@ -286,6 +286,12 @@ function Page() {
         <p className="ml-auto text-xs text-muted-foreground">
           {filtered.length} of {emps.length}
         </p>
+        <Link
+          to="/admin/employees/audit"
+          className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm hover:bg-secondary"
+        >
+          <History size={14} /> Audit log
+        </Link>
         <button
           onClick={() => {
             setEditing(null);
