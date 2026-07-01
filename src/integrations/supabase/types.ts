@@ -180,9 +180,11 @@ export type Database = {
           employee_name: string | null
           from_department_id: string | null
           from_department_name: string | null
+          from_status: string | null
           id: string
           to_department_id: string | null
           to_department_name: string | null
+          to_status: string | null
         }
         Insert: {
           action?: string
@@ -193,9 +195,11 @@ export type Database = {
           employee_name?: string | null
           from_department_id?: string | null
           from_department_name?: string | null
+          from_status?: string | null
           id?: string
           to_department_id?: string | null
           to_department_name?: string | null
+          to_status?: string | null
         }
         Update: {
           action?: string
@@ -206,9 +210,11 @@ export type Database = {
           employee_name?: string | null
           from_department_id?: string | null
           from_department_name?: string | null
+          from_status?: string | null
           id?: string
           to_department_id?: string | null
           to_department_name?: string | null
+          to_status?: string | null
         }
         Relationships: [
           {

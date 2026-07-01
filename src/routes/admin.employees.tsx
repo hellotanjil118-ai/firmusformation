@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { AdminShell } from "@/components/AdminShell";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,6 +19,7 @@ import {
   BadgeDollarSign,
   Pencil,
   Trash2,
+  History,
 } from "lucide-react";
 import {
   BarChart,
@@ -286,6 +287,12 @@ function Page() {
         <p className="ml-auto text-xs text-muted-foreground">
           {filtered.length} of {emps.length}
         </p>
+        <Link
+          to="/admin/employees/audit"
+          className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm hover:bg-secondary"
+        >
+          <History size={14} /> Audit log
+        </Link>
         <button
           onClick={() => {
             setEditing(null);
