@@ -185,7 +185,22 @@ function Page() {
   };
 
   return (
-    <AdminShell title="Marketing Center" subtitle="Campaigns · Attribution · ROAS">
+    <AdminShell title="Marketing Center" subtitle="Campaigns · Attribution · Assets library">
+      <div className="mb-4 inline-flex rounded-lg border border-border bg-card p-1">
+        {(["campaigns", "assets"] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`rounded-md px-4 py-1.5 text-xs font-medium capitalize transition-colors ${
+              tab === t ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+
+      {tab === "campaigns" && (<>
       {/* KPIs */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Kpi icon={Megaphone} label="Active campaigns" value={kpis.active.toString()} sub={`${enriched.length} total`} />
