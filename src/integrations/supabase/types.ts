@@ -513,6 +513,56 @@ export type Database = {
         }
         Relationships: []
       }
+      marketing_assets: {
+        Row: {
+          asset_url: string | null
+          campaign_id: string | null
+          content: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          kind: string
+          name: string
+          notes: string | null
+          tags: string[]
+          updated_at: string
+        }
+        Insert: {
+          asset_url?: string | null
+          campaign_id?: string | null
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind?: string
+          name: string
+          notes?: string | null
+          tags?: string[]
+          updated_at?: string
+        }
+        Update: {
+          asset_url?: string | null
+          campaign_id?: string | null
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind?: string
+          name?: string
+          notes?: string | null
+          tags?: string[]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketing_assets_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "marketing_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       marketing_campaigns: {
         Row: {
           budget: number
