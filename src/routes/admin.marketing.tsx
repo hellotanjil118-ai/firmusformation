@@ -369,6 +369,13 @@ function Page() {
           </div>
         )}
       </div>
+      </>)}
+
+      {tab === "assets" && (
+        <AssetsPanel campaigns={campaigns} userId={user?.id ?? null} />
+      )}
+
+
 
       {showForm && (
         <CampaignForm
