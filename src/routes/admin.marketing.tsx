@@ -18,6 +18,8 @@ import {
   Play,
   Pause,
   CheckCircle2,
+  Copy,
+  Link as LinkIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -84,6 +86,7 @@ function Page() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [editing, setEditing] = useState<Campaign | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [tab, setTab] = useState<"campaigns" | "assets">("campaigns");
 
   const load = async () => {
     setLoading(true);
@@ -184,7 +187,22 @@ function Page() {
   };
 
   return (
-    <AdminShell title="Marketing Center" subtitle="Campaigns · Attribution · ROAS">
+    <AdminShell title="Marketing Center" subtitle="Campaigns · Attribution · Assets library">
+      <div className="mb-4 inline-flex rounded-lg border border-border bg-card p-1">
+        {(["campaigns", "assets"] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`rounded-md px-4 py-1.5 text-xs font-medium capitalize transition-colors ${
+              tab === t ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+
+      {tab === "campaigns" && (<>
       {/* KPIs */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Kpi icon={Megaphone} label="Active campaigns" value={kpis.active.toString()} sub={`${enriched.length} total`} />
@@ -353,6 +371,13 @@ function Page() {
           </div>
         )}
       </div>
+      </>)}
+
+      {tab === "assets" && (
+        <AssetsPanel campaigns={campaigns} userId={user?.id ?? null} />
+      )}
+
+
 
       {showForm && (
         <CampaignForm
@@ -521,3 +546,300 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
     </label>
   );
 }
+
+// ============ Assets Library ============
+
+type Asset = {
+  id: string;
+  campaign_id: string | null;
+  name: string;
+  kind: string;
+  content: string | null;
+  asset_url: string | null;
+  tags: string[];
+  notes: string | null;
+  created_at: string;
+};
+
+const ASSET_KINDS = [
+  { id: "ad_copy", label: "Ad Copy" },
+  { id: "creative", label: "Creative" },
+  { id: "email_subject", label: "Email Subject" },
+  { id: "landing_page", label: "Landing Page" },
+  { id: "other", label: "Other" },
+];
+
+const KIND_TONES: Record<string, string> = {
+  ad_copy: "bg-indigo-500/15 text-indigo-400",
+  creative: "bg-pink-500/15 text-pink-400",
+  email_subject: "bg-emerald-500/15 text-emerald-400",
+  landing_page: "bg-blue-500/15 text-blue-400",
+  other: "bg-secondary text-muted-foreground",
+};
+
+function AssetsPanel({ campaigns, userId }: { campaigns: Campaign[]; userId: string | null }) {
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
+  const [kindFilter, setKindFilter] = useState("all");
+  const [campaignFilter, setCampaignFilter] = useState("all");
+  const [editing, setEditing] = useState<Asset | null>(null);
+  const [showForm, setShowForm] = useState(false);
+
+  const load = async () => {
+    setLoading(true);
+    const { data } = await supabase.from("marketing_assets").select("*").order("created_at", { ascending: false });
+    setAssets((data as Asset[]) ?? []);
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const filtered = useMemo(() => {
+    return assets.filter((a) => {
+      if (kindFilter !== "all" && a.kind !== kindFilter) return false;
+      if (campaignFilter === "unlinked" && a.campaign_id) return false;
+      if (campaignFilter !== "all" && campaignFilter !== "unlinked" && a.campaign_id !== campaignFilter) return false;
+      if (q) {
+        const hay = `${a.name} ${a.content ?? ""} ${a.tags.join(" ")}`.toLowerCase();
+        if (!hay.includes(q.toLowerCase())) return false;
+      }
+      return true;
+    });
+  }, [assets, q, kindFilter, campaignFilter]);
+
+  const campaignMap = useMemo(() => new Map(campaigns.map((c) => [c.id, c.name])), [campaigns]);
+
+  const remove = async (id: string) => {
+    if (!confirm("Delete this asset?")) return;
+    const { error } = await supabase.from("marketing_assets").delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    toast.success("Asset deleted");
+    load();
+  };
+
+  const copyContent = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success("Copied to clipboard");
+    } catch {
+      toast.error("Copy failed");
+    }
+  };
+
+  const kindCounts = useMemo(() => {
+    const by = new Map<string, number>();
+    for (const a of assets) by.set(a.kind, (by.get(a.kind) ?? 0) + 1);
+    return by;
+  }, [assets]);
+
+  return (
+    <>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {ASSET_KINDS.map((k) => (
+          <div key={k.id} className="rounded-xl border border-border bg-card p-4">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground">{k.label}</div>
+            <div className="mt-2 font-display text-2xl">{kindCounts.get(k.id) ?? 0}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-6 flex flex-wrap items-center gap-2">
+        <div className="relative flex-1 min-w-[220px]">
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search assets, copy, tags…"
+            className="w-full rounded-lg border border-input bg-background py-2 pl-9 pr-3 text-sm"
+          />
+        </div>
+        <select value={kindFilter} onChange={(e) => setKindFilter(e.target.value)} className="rounded-lg border border-input bg-background px-2 py-2 text-sm">
+          <option value="all">All types</option>
+          {ASSET_KINDS.map((k) => <option key={k.id} value={k.id}>{k.label}</option>)}
+        </select>
+        <select value={campaignFilter} onChange={(e) => setCampaignFilter(e.target.value)} className="rounded-lg border border-input bg-background px-2 py-2 text-sm">
+          <option value="all">All campaigns</option>
+          <option value="unlinked">Unlinked</option>
+          {campaigns.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+        <button
+          onClick={() => { setEditing(null); setShowForm(true); }}
+          className="flex items-center gap-1 rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground hover:opacity-90"
+        >
+          <Plus size={14} /> New asset
+        </button>
+      </div>
+
+      <div className="mt-3">
+        {loading ? (
+          <div className="grid place-items-center rounded-xl border border-border bg-card p-10">
+            <Loader2 className="animate-spin text-muted-foreground" />
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="rounded-xl border border-border bg-card p-10 text-center text-sm text-muted-foreground">
+            No assets yet. Create ad copy, subject lines, or creative links to reuse across campaigns.
+          </div>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {filtered.map((a) => {
+              const kindLabel = ASSET_KINDS.find((k) => k.id === a.kind)?.label ?? a.kind;
+              const campaignName = a.campaign_id ? campaignMap.get(a.campaign_id) : null;
+              return (
+                <div key={a.id} className="flex flex-col rounded-xl border border-border bg-card p-4">
+                  <div className="mb-2 flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="truncate font-medium">{a.name}</div>
+                      <div className="mt-1 flex flex-wrap items-center gap-1">
+                        <span className={`rounded-full px-2 py-0.5 text-[10px] ${KIND_TONES[a.kind] ?? KIND_TONES.other}`}>{kindLabel}</span>
+                        {campaignName ? (
+                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] text-primary">↳ {campaignName}</span>
+                        ) : (
+                          <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] text-muted-foreground">Unlinked</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-1">
+                      {a.content && (
+                        <button onClick={() => copyContent(a.content!)} className="rounded p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground" title="Copy">
+                          <Copy size={13} />
+                        </button>
+                      )}
+                      <button onClick={() => { setEditing(a); setShowForm(true); }} className="rounded p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground" title="Edit">
+                        <Pencil size={13} />
+                      </button>
+                      <button onClick={() => remove(a.id)} className="rounded p-1.5 text-muted-foreground hover:bg-secondary hover:text-destructive" title="Delete">
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  </div>
+                  {a.content && (
+                    <p className="mt-1 line-clamp-4 whitespace-pre-wrap text-sm text-foreground/90">{a.content}</p>
+                  )}
+                  {a.asset_url && (
+                    <a href={a.asset_url} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 truncate text-xs text-primary hover:underline">
+                      <LinkIcon size={11} /> {a.asset_url}
+                    </a>
+                  )}
+                  {a.tags.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {a.tags.map((t) => (
+                        <span key={t} className="rounded bg-secondary px-1.5 py-0.5 text-[10px] text-muted-foreground">#{t}</span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="mt-auto pt-2 text-[10px] text-muted-foreground">
+                    {new Date(a.created_at).toLocaleDateString()}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {showForm && (
+        <AssetForm
+          initial={editing}
+          campaigns={campaigns}
+          userId={userId}
+          onClose={() => setShowForm(false)}
+          onSaved={() => { setShowForm(false); load(); }}
+        />
+      )}
+    </>
+  );
+}
+
+function AssetForm({
+  initial,
+  campaigns,
+  userId,
+  onClose,
+  onSaved,
+}: {
+  initial: Asset | null;
+  campaigns: Campaign[];
+  userId: string | null;
+  onClose: () => void;
+  onSaved: () => void;
+}) {
+  const [form, setForm] = useState({
+    name: initial?.name ?? "",
+    kind: initial?.kind ?? "ad_copy",
+    campaign_id: initial?.campaign_id ?? "",
+    content: initial?.content ?? "",
+    asset_url: initial?.asset_url ?? "",
+    tags: (initial?.tags ?? []).join(", "),
+    notes: initial?.notes ?? "",
+  });
+  const [saving, setSaving] = useState(false);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim()) return toast.error("Name is required");
+    setSaving(true);
+    const payload = {
+      name: form.name.trim(),
+      kind: form.kind,
+      campaign_id: form.campaign_id || null,
+      content: form.content.trim() || null,
+      asset_url: form.asset_url.trim() || null,
+      tags: form.tags.split(",").map((t) => t.trim()).filter(Boolean),
+      notes: form.notes.trim() || null,
+    };
+    const { error } = initial
+      ? await supabase.from("marketing_assets").update(payload).eq("id", initial.id)
+      : await supabase.from("marketing_assets").insert({ ...payload, created_by: userId });
+    setSaving(false);
+    if (error) return toast.error(error.message);
+    toast.success(initial ? "Asset updated" : "Asset created");
+    onSaved();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-background/80 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-lg rounded-xl border border-border bg-card p-5 shadow-elegant">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="font-display text-lg">{initial ? "Edit asset" : "New asset"}</h3>
+          <button onClick={onClose} className="rounded p-1 text-muted-foreground hover:bg-secondary"><X size={16} /></button>
+        </div>
+        <form onSubmit={submit} className="space-y-3">
+          <Field label="Name">
+            <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm" />
+          </Field>
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Type">
+              <select value={form.kind} onChange={(e) => setForm({ ...form, kind: e.target.value })} className="w-full rounded-lg border border-input bg-background px-2 py-2 text-sm">
+                {ASSET_KINDS.map((k) => <option key={k.id} value={k.id}>{k.label}</option>)}
+              </select>
+            </Field>
+            <Field label="Linked campaign">
+              <select value={form.campaign_id} onChange={(e) => setForm({ ...form, campaign_id: e.target.value })} className="w-full rounded-lg border border-input bg-background px-2 py-2 text-sm">
+                <option value="">— None —</option>
+                {campaigns.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+            </Field>
+          </div>
+          <Field label="Content" hint="Ad copy, subject line, or template text.">
+            <textarea rows={5} value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm" />
+          </Field>
+          <Field label="Asset URL" hint="Link to creative image, video, or landing page.">
+            <input type="url" value={form.asset_url} onChange={(e) => setForm({ ...form, asset_url: e.target.value })} placeholder="https://…" className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm" />
+          </Field>
+          <Field label="Tags" hint="Comma separated. e.g. Q1, promo, retargeting">
+            <input value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm" />
+          </Field>
+          <div className="flex justify-end gap-2 pt-2">
+            <button type="button" onClick={onClose} className="rounded-lg border border-border px-4 py-2 text-sm hover:bg-secondary">Cancel</button>
+            <button type="submit" disabled={saving} className="flex items-center gap-1 rounded-lg bg-primary px-4 py-2 text-sm text-primary-foreground hover:opacity-90 disabled:opacity-60">
+              {saving && <Loader2 size={14} className="animate-spin" />}
+              {initial ? "Save" : "Create"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
