@@ -513,6 +513,54 @@ export type Database = {
         }
         Relationships: []
       }
+      marketing_campaigns: {
+        Row: {
+          budget: number
+          channel: string
+          created_at: string
+          created_by: string | null
+          end_date: string | null
+          id: string
+          name: string
+          notes: string | null
+          source_tag: string | null
+          spend: number
+          start_date: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          budget?: number
+          channel?: string
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          source_tag?: string | null
+          spend?: number
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          budget?: number
+          channel?: string
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          source_tag?: string | null
+          spend?: number
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       meetings: {
         Row: {
           client_id: string | null
