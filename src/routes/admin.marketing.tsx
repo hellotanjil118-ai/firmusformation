@@ -84,6 +84,7 @@ function Page() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [editing, setEditing] = useState<Campaign | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [tab, setTab] = useState<"campaigns" | "assets">("campaigns");
 
   const load = async () => {
     setLoading(true);
