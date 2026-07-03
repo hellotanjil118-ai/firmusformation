@@ -30,6 +30,7 @@ import {
   Menu,
   X,
   ChevronDown,
+  Sparkles,
 } from "lucide-react";
 
 type NavItem = { to: string; label: string; icon: typeof Inbox; exact?: boolean };
