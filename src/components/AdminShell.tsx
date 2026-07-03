@@ -71,6 +71,7 @@ const groups: NavGroup[] = [
     items: [
       { to: "/admin/invoices", label: "Finance Center", icon: Receipt },
       { to: "/admin/ai-accountant", label: "AI Accountant", icon: Bot },
+      { to: "/admin/insights", label: "AI Insights", icon: Sparkles },
       { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
       { to: "/admin/automation", label: "AI Automation", icon: Workflow },
     ],

@@ -38,6 +38,7 @@ import { Route as AdminMarketingRouteImport } from './routes/admin.marketing'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminInvoicesRouteImport } from './routes/admin.invoices'
+import { Route as AdminInsightsRouteImport } from './routes/admin.insights'
 import { Route as AdminInboxRouteImport } from './routes/admin.inbox'
 import { Route as AdminEmployeesRouteImport } from './routes/admin.employees'
 import { Route as AdminDocumentsRouteImport } from './routes/admin.documents'
@@ -59,6 +60,7 @@ import { Route as AdminLeadsIdRouteImport } from './routes/admin.leads.$id'
 import { Route as AdminInvoicesIdRouteImport } from './routes/admin.invoices.$id'
 import { Route as AdminEmployeesAuditRouteImport } from './routes/admin.employees_.audit'
 import { Route as AdminClientsIdRouteImport } from './routes/admin.clients.$id'
+import { Route as ApiPublicHooksGenerateInsightsRouteImport } from './routes/api/public/hooks/generate-insights'
 
 const TestimonialsRoute = TestimonialsRouteImport.update({
   id: '/testimonials',
@@ -205,6 +207,11 @@ const AdminInvoicesRoute = AdminInvoicesRouteImport.update({
   path: '/admin/invoices',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminInsightsRoute = AdminInsightsRouteImport.update({
+  id: '/admin/insights',
+  path: '/admin/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminInboxRoute = AdminInboxRouteImport.update({
   id: '/admin/inbox',
   path: '/admin/inbox',
@@ -310,6 +317,12 @@ const AdminClientsIdRoute = AdminClientsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminClientsRoute,
 } as any)
+const ApiPublicHooksGenerateInsightsRoute =
+  ApiPublicHooksGenerateInsightsRouteImport.update({
+    id: '/api/public/hooks/generate-insights',
+    path: '/api/public/hooks/generate-insights',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -332,6 +345,7 @@ export interface FileRoutesByFullPath {
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/employees': typeof AdminEmployeesRoute
   '/admin/inbox': typeof AdminInboxRoute
+  '/admin/insights': typeof AdminInsightsRoute
   '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -362,6 +376,7 @@ export interface FileRoutesByFullPath {
   '/portal/tickets/$id': typeof PortalTicketsIdRoute
   '/portal/orders/': typeof PortalOrdersIndexRoute
   '/portal/tickets/': typeof PortalTicketsIndexRoute
+  '/api/public/hooks/generate-insights': typeof ApiPublicHooksGenerateInsightsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -384,6 +399,7 @@ export interface FileRoutesByTo {
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/employees': typeof AdminEmployeesRoute
   '/admin/inbox': typeof AdminInboxRoute
+  '/admin/insights': typeof AdminInsightsRoute
   '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -414,6 +430,7 @@ export interface FileRoutesByTo {
   '/portal/tickets/$id': typeof PortalTicketsIdRoute
   '/portal/orders': typeof PortalOrdersIndexRoute
   '/portal/tickets': typeof PortalTicketsIndexRoute
+  '/api/public/hooks/generate-insights': typeof ApiPublicHooksGenerateInsightsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -437,6 +454,7 @@ export interface FileRoutesById {
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/employees': typeof AdminEmployeesRoute
   '/admin/inbox': typeof AdminInboxRoute
+  '/admin/insights': typeof AdminInsightsRoute
   '/admin/invoices': typeof AdminInvoicesRouteWithChildren
   '/admin/leads': typeof AdminLeadsRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -467,6 +485,7 @@ export interface FileRoutesById {
   '/portal/tickets/$id': typeof PortalTicketsIdRoute
   '/portal/orders/': typeof PortalOrdersIndexRoute
   '/portal/tickets/': typeof PortalTicketsIndexRoute
+  '/api/public/hooks/generate-insights': typeof ApiPublicHooksGenerateInsightsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -491,6 +510,7 @@ export interface FileRouteTypes {
     | '/admin/documents'
     | '/admin/employees'
     | '/admin/inbox'
+    | '/admin/insights'
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
@@ -521,6 +541,7 @@ export interface FileRouteTypes {
     | '/portal/tickets/$id'
     | '/portal/orders/'
     | '/portal/tickets/'
+    | '/api/public/hooks/generate-insights'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -543,6 +564,7 @@ export interface FileRouteTypes {
     | '/admin/documents'
     | '/admin/employees'
     | '/admin/inbox'
+    | '/admin/insights'
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
@@ -573,6 +595,7 @@ export interface FileRouteTypes {
     | '/portal/tickets/$id'
     | '/portal/orders'
     | '/portal/tickets'
+    | '/api/public/hooks/generate-insights'
   id:
     | '__root__'
     | '/'
@@ -595,6 +618,7 @@ export interface FileRouteTypes {
     | '/admin/documents'
     | '/admin/employees'
     | '/admin/inbox'
+    | '/admin/insights'
     | '/admin/invoices'
     | '/admin/leads'
     | '/admin/login'
@@ -625,6 +649,7 @@ export interface FileRouteTypes {
     | '/portal/tickets/$id'
     | '/portal/orders/'
     | '/portal/tickets/'
+    | '/api/public/hooks/generate-insights'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -648,6 +673,7 @@ export interface RootRouteChildren {
   AdminDocumentsRoute: typeof AdminDocumentsRoute
   AdminEmployeesRoute: typeof AdminEmployeesRoute
   AdminInboxRoute: typeof AdminInboxRoute
+  AdminInsightsRoute: typeof AdminInsightsRoute
   AdminInvoicesRoute: typeof AdminInvoicesRouteWithChildren
   AdminLeadsRoute: typeof AdminLeadsRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
@@ -672,6 +698,7 @@ export interface RootRouteChildren {
   PortalTicketsIdRoute: typeof PortalTicketsIdRoute
   PortalOrdersIndexRoute: typeof PortalOrdersIndexRoute
   PortalTicketsIndexRoute: typeof PortalTicketsIndexRoute
+  ApiPublicHooksGenerateInsightsRoute: typeof ApiPublicHooksGenerateInsightsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -879,6 +906,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInvoicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/insights': {
+      id: '/admin/insights'
+      path: '/admin/insights'
+      fullPath: '/admin/insights'
+      preLoaderRoute: typeof AdminInsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/inbox': {
       id: '/admin/inbox'
       path: '/admin/inbox'
@@ -1026,6 +1060,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminClientsIdRouteImport
       parentRoute: typeof AdminClientsRoute
     }
+    '/api/public/hooks/generate-insights': {
+      id: '/api/public/hooks/generate-insights'
+      path: '/api/public/hooks/generate-insights'
+      fullPath: '/api/public/hooks/generate-insights'
+      preLoaderRoute: typeof ApiPublicHooksGenerateInsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1122,6 +1163,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDocumentsRoute: AdminDocumentsRoute,
   AdminEmployeesRoute: AdminEmployeesRoute,
   AdminInboxRoute: AdminInboxRoute,
+  AdminInsightsRoute: AdminInsightsRoute,
   AdminInvoicesRoute: AdminInvoicesRouteWithChildren,
   AdminLeadsRoute: AdminLeadsRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
@@ -1146,6 +1188,7 @@ const rootRouteChildren: RootRouteChildren = {
   PortalTicketsIdRoute: PortalTicketsIdRoute,
   PortalOrdersIndexRoute: PortalOrdersIndexRoute,
   PortalTicketsIndexRoute: PortalTicketsIndexRoute,
+  ApiPublicHooksGenerateInsightsRoute: ApiPublicHooksGenerateInsightsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
