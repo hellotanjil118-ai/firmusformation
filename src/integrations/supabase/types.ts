@@ -41,6 +41,48 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_insights: {
+        Row: {
+          anomalies: Json
+          cadence: string
+          cashflow_risks: Json
+          created_at: string
+          headline: string
+          id: string
+          notified_count: number
+          recommendations: Json
+          severity: string
+          snapshot: Json
+          summary: string
+        }
+        Insert: {
+          anomalies?: Json
+          cadence?: string
+          cashflow_risks?: Json
+          created_at?: string
+          headline: string
+          id?: string
+          notified_count?: number
+          recommendations?: Json
+          severity?: string
+          snapshot?: Json
+          summary: string
+        }
+        Update: {
+          anomalies?: Json
+          cadence?: string
+          cashflow_risks?: Json
+          created_at?: string
+          headline?: string
+          id?: string
+          notified_count?: number
+          recommendations?: Json
+          severity?: string
+          snapshot?: Json
+          summary?: string
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           content: string
