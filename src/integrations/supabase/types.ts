@@ -212,6 +212,120 @@ export type Database = {
         }
         Relationships: []
       }
+      document_folders: {
+        Row: {
+          category: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          name: string
+          parent_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          parent_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          parent_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_folders_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "document_folders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      documents: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          description: string | null
+          employee_id: string | null
+          folder_id: string | null
+          id: string
+          mime_type: string | null
+          name: string
+          size_bytes: number | null
+          storage_path: string
+          tags: string[] | null
+          updated_at: string
+          uploaded_by: string | null
+          version: number
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          description?: string | null
+          employee_id?: string | null
+          folder_id?: string | null
+          id?: string
+          mime_type?: string | null
+          name: string
+          size_bytes?: number | null
+          storage_path: string
+          tags?: string[] | null
+          updated_at?: string
+          uploaded_by?: string | null
+          version?: number
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          description?: string | null
+          employee_id?: string | null
+          folder_id?: string | null
+          id?: string
+          mime_type?: string | null
+          name?: string
+          size_bytes?: number | null
+          storage_path?: string
+          tags?: string[] | null
+          updated_at?: string
+          uploaded_by?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "document_folders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employee_assignment_audit: {
         Row: {
           action: string
@@ -997,6 +1111,63 @@ export type Database = {
         }
         Relationships: []
       }
+      projects: {
+        Row: {
+          client_id: string | null
+          color: string | null
+          created_at: string
+          created_by: string | null
+          department_id: string | null
+          description: string | null
+          due_at: string | null
+          id: string
+          name: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          client_id?: string | null
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          department_id?: string | null
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          name: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string | null
+          color?: string | null
+          created_at?: string
+          created_by?: string | null
+          department_id?: string | null
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          name?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       services: {
         Row: {
           created_at: string
@@ -1077,6 +1248,72 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      tasks: {
+        Row: {
+          assignee_id: string | null
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          due_at: string | null
+          id: string
+          labels: string[] | null
+          order_index: number
+          priority: string
+          project_id: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assignee_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          labels?: string[] | null
+          order_index?: number
+          priority?: string
+          project_id?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assignee_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          labels?: string[] | null
+          order_index?: number
+          priority?: string
+          project_id?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_assignee_id_fkey"
+            columns: ["assignee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       testimonials: {
         Row: {
