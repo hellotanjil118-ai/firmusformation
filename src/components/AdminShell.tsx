@@ -63,6 +63,7 @@ const groups: NavGroup[] = [
     label: "Engagement",
     items: [
       { to: "/admin/inbox", label: "Communication", icon: MessagesSquare },
+      { to: "/admin/community", label: "Team Community", icon: Users },
       { to: "/admin/tickets", label: "Support", icon: LifeBuoy },
       { to: "/admin/meetings", label: "Meetings", icon: Calendar },
     ],
