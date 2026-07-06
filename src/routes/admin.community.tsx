@@ -72,7 +72,7 @@ function Page() {
       .select("id,name,slug,description,kind,department_id")
       .order("kind", { ascending: true })
       .order("name", { ascending: true });
-    const list = (data as Channel[]) ?? [];
+    const list = (data as unknown as Channel[]) ?? [];
     setChannels(list);
     if (!activeId && list.length) setActiveId(list[0].id);
     setLoading(false);
@@ -94,7 +94,7 @@ function Page() {
       .limit(200)
       .then(({ data }) => {
         if (cancelled) return;
-        setMessages((data as Message[]) ?? []);
+        setMessages((data as unknown as Message[]) ?? []);
         setTimeout(() => scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight }), 50);
       });
 
@@ -160,7 +160,7 @@ function Page() {
       .single();
     if (!error && data) {
       setChannels((c) => [...c, data as Channel]);
-      setActiveId((data as Channel).id);
+      setActiveId((data as unknown as Channel).id);
     } else if (error) {
       alert(error.message);
     }

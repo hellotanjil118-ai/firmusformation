@@ -43,6 +43,7 @@ import { Route as AdminInboxRouteImport } from './routes/admin.inbox'
 import { Route as AdminEmployeesRouteImport } from './routes/admin.employees'
 import { Route as AdminDocumentsRouteImport } from './routes/admin.documents'
 import { Route as AdminDepartmentsRouteImport } from './routes/admin.departments'
+import { Route as AdminCommunityRouteImport } from './routes/admin.community'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as AdminAutomationRouteImport } from './routes/admin.automation'
@@ -232,6 +233,11 @@ const AdminDepartmentsRoute = AdminDepartmentsRouteImport.update({
   path: '/admin/departments',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCommunityRoute = AdminCommunityRouteImport.update({
+  id: '/admin/community',
+  path: '/admin/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminClientsRoute = AdminClientsRouteImport.update({
   id: '/admin/clients',
   path: '/admin/clients',
@@ -341,6 +347,7 @@ export interface FileRoutesByFullPath {
   '/admin/automation': typeof AdminAutomationRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/community': typeof AdminCommunityRoute
   '/admin/departments': typeof AdminDepartmentsRoute
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/employees': typeof AdminEmployeesRoute
@@ -395,6 +402,7 @@ export interface FileRoutesByTo {
   '/admin/automation': typeof AdminAutomationRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/community': typeof AdminCommunityRoute
   '/admin/departments': typeof AdminDepartmentsRoute
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/employees': typeof AdminEmployeesRoute
@@ -450,6 +458,7 @@ export interface FileRoutesById {
   '/admin/automation': typeof AdminAutomationRoute
   '/admin/blog': typeof AdminBlogRoute
   '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/community': typeof AdminCommunityRoute
   '/admin/departments': typeof AdminDepartmentsRoute
   '/admin/documents': typeof AdminDocumentsRoute
   '/admin/employees': typeof AdminEmployeesRoute
@@ -506,6 +515,7 @@ export interface FileRouteTypes {
     | '/admin/automation'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/community'
     | '/admin/departments'
     | '/admin/documents'
     | '/admin/employees'
@@ -560,6 +570,7 @@ export interface FileRouteTypes {
     | '/admin/automation'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/community'
     | '/admin/departments'
     | '/admin/documents'
     | '/admin/employees'
@@ -614,6 +625,7 @@ export interface FileRouteTypes {
     | '/admin/automation'
     | '/admin/blog'
     | '/admin/clients'
+    | '/admin/community'
     | '/admin/departments'
     | '/admin/documents'
     | '/admin/employees'
@@ -669,6 +681,7 @@ export interface RootRouteChildren {
   AdminAutomationRoute: typeof AdminAutomationRoute
   AdminBlogRoute: typeof AdminBlogRoute
   AdminClientsRoute: typeof AdminClientsRouteWithChildren
+  AdminCommunityRoute: typeof AdminCommunityRoute
   AdminDepartmentsRoute: typeof AdminDepartmentsRoute
   AdminDocumentsRoute: typeof AdminDocumentsRoute
   AdminEmployeesRoute: typeof AdminEmployeesRoute
@@ -941,6 +954,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDepartmentsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/community': {
+      id: '/admin/community'
+      path: '/admin/community'
+      fullPath: '/admin/community'
+      preLoaderRoute: typeof AdminCommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/clients': {
       id: '/admin/clients'
       path: '/admin/clients'
@@ -1159,6 +1179,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAutomationRoute: AdminAutomationRoute,
   AdminBlogRoute: AdminBlogRoute,
   AdminClientsRoute: AdminClientsRouteWithChildren,
+  AdminCommunityRoute: AdminCommunityRoute,
   AdminDepartmentsRoute: AdminDepartmentsRoute,
   AdminDocumentsRoute: AdminDocumentsRoute,
   AdminEmployeesRoute: AdminEmployeesRoute,
