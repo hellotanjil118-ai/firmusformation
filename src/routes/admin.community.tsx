@@ -159,7 +159,7 @@ function Page() {
       .select("id,name,slug,description,kind,department_id")
       .single();
     if (!error && data) {
-      setChannels((c) => [...c, data as Channel]);
+      setChannels((c) => [...c, data as unknown as Channel]);
       setActiveId((data as unknown as Channel).id);
     } else if (error) {
       alert(error.message);
