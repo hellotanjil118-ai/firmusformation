@@ -246,6 +246,111 @@ export type Database = {
           },
         ]
       }
+      company_settings: {
+        Row: {
+          address_line1: string | null
+          address_line2: string | null
+          brand_primary: string | null
+          city: string | null
+          company_name: string
+          contact_email: string | null
+          contact_phone: string | null
+          country: string | null
+          created_at: string
+          currency: string
+          id: string
+          insights_cadence: string
+          invoice_footer: string | null
+          invoice_prefix: string | null
+          invoice_terms: string | null
+          legal_name: string | null
+          logo_url: string | null
+          notify_invoice_paid: boolean
+          notify_new_leads: boolean
+          notify_new_orders: boolean
+          notify_new_tickets: boolean
+          postal_code: string | null
+          singleton: boolean
+          social_links: Json
+          state: string | null
+          support_email: string | null
+          tagline: string | null
+          tax_id: string | null
+          timezone: string
+          updated_at: string
+          website_url: string | null
+          whatsapp_number: string | null
+        }
+        Insert: {
+          address_line1?: string | null
+          address_line2?: string | null
+          brand_primary?: string | null
+          city?: string | null
+          company_name?: string
+          contact_email?: string | null
+          contact_phone?: string | null
+          country?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          insights_cadence?: string
+          invoice_footer?: string | null
+          invoice_prefix?: string | null
+          invoice_terms?: string | null
+          legal_name?: string | null
+          logo_url?: string | null
+          notify_invoice_paid?: boolean
+          notify_new_leads?: boolean
+          notify_new_orders?: boolean
+          notify_new_tickets?: boolean
+          postal_code?: string | null
+          singleton?: boolean
+          social_links?: Json
+          state?: string | null
+          support_email?: string | null
+          tagline?: string | null
+          tax_id?: string | null
+          timezone?: string
+          updated_at?: string
+          website_url?: string | null
+          whatsapp_number?: string | null
+        }
+        Update: {
+          address_line1?: string | null
+          address_line2?: string | null
+          brand_primary?: string | null
+          city?: string | null
+          company_name?: string
+          contact_email?: string | null
+          contact_phone?: string | null
+          country?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          insights_cadence?: string
+          invoice_footer?: string | null
+          invoice_prefix?: string | null
+          invoice_terms?: string | null
+          legal_name?: string | null
+          logo_url?: string | null
+          notify_invoice_paid?: boolean
+          notify_new_leads?: boolean
+          notify_new_orders?: boolean
+          notify_new_tickets?: boolean
+          postal_code?: string | null
+          singleton?: boolean
+          social_links?: Json
+          state?: string | null
+          support_email?: string | null
+          tagline?: string | null
+          tax_id?: string | null
+          timezone?: string
+          updated_at?: string
+          website_url?: string | null
+          whatsapp_number?: string | null
+        }
+        Relationships: []
+      }
       departments: {
         Row: {
           code: string | null
