@@ -49,9 +49,7 @@ function ResetPassword() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-hero px-6">
       <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-elegant">
         <div className="mb-6 flex items-center gap-3">
-          <div className="grid h-10 w-10 place-items-center rounded-md bg-gradient-gold">
-            <KeyRound size={18} className="text-gold-foreground" />
-          </div>
+          <BrandLogo variant="mark" className="h-10 w-10" />
           <div>
             <h1 className="font-display text-xl">Set a new password</h1>
             <p className="text-xs text-muted-foreground">Choose a strong password you don't use elsewhere.</p>

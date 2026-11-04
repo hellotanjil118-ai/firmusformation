@@ -35,9 +35,7 @@ export function PortalShell({ children, title }: { children: ReactNode; title: s
       <aside className="relative hidden w-64 shrink-0 border-r border-border bg-[color:var(--surface)] md:block">
         <div className="border-b border-border p-5">
           <Link to="/portal" className="flex items-center gap-2">
-            <div className="grid h-8 w-8 place-items-center rounded-md bg-gradient-gold">
-              <span className="font-display text-sm font-bold text-gold-foreground">F</span>
-            </div>
+            <BrandLogo variant="mark" className="h-8 w-8" />
             <span className="font-display text-sm font-semibold">Client Portal</span>
           </Link>
         </div>

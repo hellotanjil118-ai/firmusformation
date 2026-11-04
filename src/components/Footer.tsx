@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export function Footer() {
   return (
@@ -7,12 +8,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-4">
         <div>
           <div className="flex items-center gap-2">
-            <div className="grid h-9 w-9 place-items-center rounded-md bg-gradient-primary">
-              <span className="font-display text-lg font-bold text-primary-foreground">F</span>
-            </div>
-            <span className="font-display text-lg font-semibold">
-              Firmus <span className="text-gradient-gold">Formation</span>
-            </span>
+            <BrandLogo variant="full" className="h-10 w-auto" />
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             End-to-end Amazon FBA setup and management for international sellers. LLC, EIN, sourcing, PPC and beyond.

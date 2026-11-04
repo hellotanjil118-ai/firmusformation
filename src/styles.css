@@ -39,52 +39,54 @@
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-sans: "DM Sans", system-ui, sans-serif;
 
-  --shadow-elegant: 0 20px 60px -20px color-mix(in oklab, var(--primary) 25%, transparent);
-  --shadow-gold: 0 12px 40px -12px color-mix(in oklab, var(--gold) 40%, transparent);
+  --shadow-elegant: 0 20px 60px -20px color-mix(in oklab, var(--primary) 28%, transparent);
+  --shadow-gold: 0 12px 40px -12px color-mix(in oklab, var(--gold) 45%, transparent);
 }
 
 :root {
   --radius: 0.75rem;
 
-  /* Emerald Prestige — rich emerald + gold on warm ivory */
-  --background: oklch(0.985 0.008 95);
-  --foreground: oklch(0.22 0.04 170);
-  --surface: oklch(0.96 0.012 95);
+  /* Periwinkle brand palette, sampled from the Firmus Formation logo
+     (logo blue #7889F8; deepened primary #2536C8 keeps white text readable) */
+  --background: oklch(0.985 0.006 275);
+  --foreground: oklch(0.24 0.05 275);
+  --surface: oklch(0.96 0.01 275);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.04 170);
+  --card-foreground: oklch(0.24 0.05 275);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.04 170);
+  --popover-foreground: oklch(0.24 0.05 275);
 
-  --primary: oklch(0.40 0.10 165);              /* #064e3b emerald */
-  --primary-foreground: oklch(0.985 0.008 95);
-  --primary-glow: oklch(0.52 0.13 165);         /* #0d7a5f */
+  --primary: #2536C8;
+  --primary-foreground: #FFFFFF;
+  --primary-glow: #4B5EF0;
 
-  --secondary: oklch(0.96 0.012 95);
-  --secondary-foreground: oklch(0.30 0.05 170);
+  --secondary: oklch(0.955 0.012 275);
+  --secondary-foreground: oklch(0.32 0.06 275);
 
-  --muted: oklch(0.94 0.014 95);
-  --muted-foreground: oklch(0.50 0.03 165);
+  --muted: oklch(0.945 0.012 275);
+  --muted-foreground: oklch(0.52 0.04 275);
 
-  --accent: oklch(0.74 0.13 85);                /* #c9a84c gold */
-  --accent-foreground: oklch(0.22 0.04 170);
+  --accent: #7889F8;
+  --accent-foreground: oklch(0.20 0.06 275);
 
-  --gold: oklch(0.74 0.13 85);
-  --gold-foreground: oklch(0.22 0.04 170);
+  /* legacy token name kept for stability — now part of the periwinkle family, no gold anywhere */
+  --gold: #4B5EF0;
+  --gold-foreground: #FFFFFF;
 
   --destructive: oklch(0.6 0.22 27);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.40 0.10 165 / 12%);
-  --input: oklch(0.40 0.10 165 / 14%);
-  --ring: oklch(0.74 0.13 85);
+  --border: color-mix(in oklab, var(--primary) 14%, transparent);
+  --input: color-mix(in oklab, var(--primary) 16%, transparent);
+  --ring: #7889F8;
 
-  --gradient-hero: radial-gradient(ellipse at top right, color-mix(in oklab, var(--gold) 28%, transparent), transparent 60%),
-                   radial-gradient(ellipse at bottom left, color-mix(in oklab, var(--primary) 22%, transparent), transparent 55%),
-                   linear-gradient(180deg, oklch(0.985 0.008 95), oklch(0.95 0.018 95));
-  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
-  --gradient-gold: linear-gradient(135deg, oklch(0.68 0.14 80), oklch(0.82 0.12 90));
-  --gradient-cta: linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 55%, var(--gold) 130%);
+  --gradient-hero: radial-gradient(ellipse at top right, color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%),
+                   radial-gradient(ellipse at bottom left, color-mix(in oklab, var(--primary) 16%, transparent), transparent 55%),
+                   linear-gradient(180deg, oklch(0.985 0.006 275), oklch(0.955 0.014 275));
+  --gradient-primary: linear-gradient(135deg, #2536C8, #4B5EF0);
+  --gradient-gold: linear-gradient(135deg, #4B5EF0, #7889F8);
+  --gradient-cta: linear-gradient(135deg, #2536C8 0%, #4B5EF0 55%, #7889F8 130%);
 }
 
 @layer base {
@@ -111,30 +113,30 @@
     color: transparent;
   }
   .text-gradient-emerald {
-    background: linear-gradient(135deg, var(--primary), var(--primary-glow), var(--gold));
+    background: linear-gradient(135deg, #2536C8, #4B5EF0, #7889F8);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   .shadow-elegant { box-shadow: 0 20px 60px -20px color-mix(in oklab, var(--primary) 35%, transparent); }
-  .shadow-gold { box-shadow: 0 16px 50px -14px color-mix(in oklab, var(--gold) 55%, transparent); }
-  .shadow-luxe { box-shadow: 0 30px 80px -24px color-mix(in oklab, var(--primary) 45%, transparent), 0 0 0 1px color-mix(in oklab, var(--gold) 25%, transparent); }
-  .ring-gold { box-shadow: 0 0 0 1px color-mix(in oklab, var(--gold) 60%, transparent); }
+  .shadow-gold { box-shadow: 0 16px 50px -14px color-mix(in oklab, var(--primary) 45%, transparent); }
+  .shadow-luxe { box-shadow: 0 30px 80px -24px color-mix(in oklab, var(--primary) 45%, transparent), 0 0 0 1px color-mix(in oklab, var(--primary) 20%, transparent); }
+  .ring-gold { box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 35%, transparent); }
   .cta-luxe {
     background: var(--gradient-cta);
     background-size: 200% 200%;
-    color: var(--primary-foreground);
+    color: #FFFFFF;
     transition: background-position .6s ease, transform .2s ease, box-shadow .3s ease;
     box-shadow: 0 12px 32px -10px color-mix(in oklab, var(--primary) 50%, transparent);
   }
   .cta-luxe:hover {
     background-position: 100% 0;
     transform: translateY(-1px);
-    box-shadow: 0 18px 44px -12px color-mix(in oklab, var(--gold) 55%, transparent);
+    box-shadow: 0 18px 44px -12px color-mix(in oklab, var(--primary) 55%, transparent);
   }
   .glass {
     background: color-mix(in oklab, var(--card) 78%, transparent);
     backdrop-filter: blur(14px);
-    border: 1px solid color-mix(in oklab, var(--gold) 18%, transparent);
+    border: 1px solid color-mix(in oklab, var(--primary) 12%, transparent);
   }
 }

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -19,12 +20,7 @@ export function Header() {
     <header className="sticky top-0 z-40 glass">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-md bg-gradient-primary shadow-elegant">
-            <span className="font-display text-lg font-bold text-primary-foreground">F</span>
-          </div>
-          <span className="font-display text-lg font-semibold tracking-tight">
-            Firmus <span className="text-gradient-gold">Formation</span>
-          </span>
+          <BrandLogo variant="full" className="h-9 w-auto" />
         </Link>
         <nav className="hidden items-center gap-1 lg:flex">
           {nav.map((n) => (
