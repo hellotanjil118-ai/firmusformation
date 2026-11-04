@@ -1,75 +1,58 @@
-# Firmus Admin Expansion — Implementation Plan
+# Firmus Formation brand swap: real logo + periwinkle theme
 
-Build in **4 sequential batches**. Each batch ends in a working, deployable state. You approve, I ship the next.
+Replace the old "F" box mark and the emerald+gold theme with the uploaded logo and its own colors, wire the admin brand settings, and refresh favicon / share image.
 
-## Batch 1 — Clients + Client Portal
-**Database**
-- `clients` table: name, email, phone, company, country, status (active/paused/churned), notes, created_at
-- Link `clients.user_id` (nullable) → `auth.users` so a client can log in and only see their own data
-- RLS: admins full access; clients read only their own row
+## 1. Prepare the logo assets (from the upload)
 
-**Admin pages**
-- `/admin/clients` — list, search, filter by status
-- `/admin/clients/$id` — detail view: profile, orders, invoices, notes timeline
+The uploaded JPEG shows the logo in light periwinkle (~#788EFE) on a dark textured background. The site is light, so:
 
-**Client portal**
-- `/portal/login` — separate login (same auth, role check redirects)
-- `/portal` — dashboard: my orders, invoices, progress timeline, documents
-- Layout `_portal.tsx` with auth guard
+- Programmatically remove the dark background (luminance keying with PIL, despeckle edges) — exact pixel-level method so lettering and colors are untouched, never recolored, never stretched or cropped. Fallback if quality is poor: `imagegen--edit_image` background removal, then compare against the original.
+- Save the clean full logo (mark + FIRMUS FORMATION wordmark) as the one canonical asset, uploaded via `lovable-assets`, imported by a single shared component.
+- Cut the circular mark (left emblem) into its own square PNG for favicon and tight spaces — mark-only version, same colors.
+- Build a 1200x630 share image: the logo centered on the ivory page background (composed with PIL from the transparent asset, no regeneration).
 
-## Batch 2 — Orders + Service Status Timeline
-**Database**
-- `orders`: client_id, service_id, package_name, price, status, started_at, due_at
-- `order_stages`: order_id, name, order_index, status (pending/in_progress/done/blocked), completed_at, notes
-- Default stages template per service (LLC → EIN → Seller Central → Listing → Launched)
-- `lead_notes` + `lead_status` enum upgrade for the existing leads table (CRM upgrade)
+## 2. One shared logo component
 
-**Admin pages**
-- `/admin/orders` — pipeline / kanban view by stage
-- `/admin/orders/$id` — stage timeline with check-off, assignee, due dates
-- Convert lead → client → order action
+Create `src/components/BrandLogo.tsx` with `full` and `mark` variants, and optional `logoUrl` override. Replace every old "F" box + wordmark with it in:
 
-**Portal**
-- Client sees their order timeline read-only with progress %
+- Public site header (desktop + mobile menu) — `Header.tsx`
+- Public footer — `Footer.tsx`
+- Admin sidebar — `AdminShell.tsx`
+- Client portal sidebar — `PortalShell.tsx`
+- Admin login — `admin.login.tsx`
+- Portal login — `portal.login.tsx`
+- Password reset page — `reset-password.tsx`
 
-## Batch 3 — Invoices + Payments + Coupons
-**Database**
-- `invoices`: client_id, order_id, number (auto), amount, currency, status (draft/sent/paid/refunded/overdue), issued_at, due_at, paid_at, line_items (jsonb)
-- `payments`: invoice_id, amount, method (manual/bank/stripe), reference, paid_at
-- `coupons`: code, type (percent/fixed), value, max_uses, used_count, expires_at, active
+No page keeps a different third version. Small spots use the mark variant.
 
-**Admin pages**
-- `/admin/invoices` — list, filter, mark paid, record refund
-- `/admin/invoices/$id` — printable invoice (PDF-ready HTML)
-- `/admin/coupons` — CRUD
+## 3. New theme (replaces Emerald Prestige entirely)
 
-**Portal**
-- Client sees their invoices, can download/print
+Colors sampled from the logo (final exact values sampled during implementation, from the upload):
 
-**Note:** No Stripe yet — manual payment recording only. Stripe layer added later if you want.
+- Dominant periwinkle `#788EFE` → accent, links, focus rings, highlights, glow.
+- A deepened version of the same hue (`~#3D4EC7`) → `--primary` so white text on primary buttons stays clearly readable (the logo blue itself is too light for white-on-primary text).
+- Foreground/borders shift to a neutral dark indigo; pages and cards stay white/ivory.
 
-## Batch 4 — Team Roles + Audit Logs + Analytics
-**Database**
-- Extend `app_role` enum: `admin`, `manager`, `staff`
-- Add granular permission checks in `AdminShell` (hide sections by role)
-- `audit_logs`: actor_id, action, entity_type, entity_id, metadata (jsonb), ip, created_at
-- DB trigger writes audit rows on insert/update/delete for key tables
+In `src/styles.css`: replace all emerald/gold token values (including the existing `--gold` token and every `color-mix(... gold ...)` shadow/gradient), gradients, glows, and the `cta-luxe` / `text-gradient-*` classes. The existing utility class names (`bg-gradient-gold`, `text-gradient-emerald`, etc. used across ~40 files) stay as the stable API but their values are remapped to the new palette, so no emerald or gold color remains anywhere. Fonts, layout, and copy unchanged.
 
-**Admin pages**
-- `/admin/team` — list users, change role (admin only)
-- `/admin/audit` — searchable activity log
-- `/admin/analytics` — revenue chart, leads/month, conversion funnel (lead → client → paid), top services
+## 4. Favicon and social sharing
 
-## What I'm explicitly leaving out (for later rounds)
-Live chat, support tickets, appointments, notifications (email/SMS/WA), backups, multi-language, SEO/CMS beyond what exists, encrypted document storage, file access ACLs, API integrations, spam protection, login monitoring with alerts, DB optimization tools. These are real but each is its own batch — let's do them after the core is solid.
+- New `public/favicon.png` from the mark-only PNG (64x64, padded, not stretched); referenced from `__root.tsx` head; delete the default `public/favicon.ico`.
+- `og:image` / `twitter:image` on the homepage point to the new 1200x630 share image (hosted asset URL) — removes the old preview screenshot. Note: the live URL shows the new share image only after the next publish.
 
-## Tech notes
-- All admin pages use existing `AdminShell` pattern
-- Portal gets its own `PortalShell` with similar nav
-- RLS on every table; admin role bypass via `has_role()`
-- Auto-incrementing invoice numbers via sequence
-- Audit triggers in plpgsql
+## 5. Make admin brand settings actually work
 
----
+`company_settings` is already readable by everyone (verified: public SELECT policy exists) and already stores `logo_url` and `brand_primary`. Wire it via a small `useBrand` hook + context that loads these two fields once and provides fallbacks:
 
-**Confirm and I'll start Batch 1** (clients table + portal). Each batch is roughly one round of work.
+- `logo_url` set → header, footer, and both sidebars show that URL (falling back to the uploaded logo when empty or a broken image).
+- `brand_primary` set → applied at runtime as a CSS variable override for `--primary` (and a matching darker companion for readable white-on-primary text); empty → the logo-based defaults. No broken theme in either state.
+- Shells render skeletons/no-flicker defaults until settings load.
+
+## 6. Verification before finishing
+
+- Playwright through every page in section 2: logo renders, not stretched/cut/pixelated; no old "F" box anywhere.
+- Screenshot sweep for any remaining emerald/gold color on buttons, links, gradients, headers.
+- Favicon visible in the browser tab; homepage `og:image` tags updated.
+- In admin settings, change Logo URL and Brand primary color once, confirm they take effect on the site, then set them back.
+- Confirm nothing else changed: same pages, text, layout, fonts, features.
+- Report the exact sampled hex values (primary + accent), every logo placement, and anything not verified.
