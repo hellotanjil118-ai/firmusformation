@@ -1602,7 +1602,21 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_brand_settings: {
+        Row: {
+          brand_primary: string | null
+          logo_url: string | null
+        }
+        Insert: {
+          brand_primary?: string | null
+          logo_url?: string | null
+        }
+        Update: {
+          brand_primary?: string | null
+          logo_url?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       claim_client_by_email: { Args: never; Returns: string }

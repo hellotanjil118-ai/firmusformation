@@ -11,7 +11,7 @@ let cache: Promise<Brand> | null = null;
 function loadBrand(): Promise<Brand> {
   if (!cache) {
     cache = supabase
-      .from("company_settings")
+      .from("public_brand_settings")
       .select("logo_url, brand_primary")
       .eq("singleton", true)
       .maybeSingle()
