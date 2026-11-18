@@ -1,6 +1,7 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { BrandLogo } from "@/components/BrandLogo";
 import { LayoutDashboard, FileText, Receipt, LogOut, Loader2, ExternalLink, LifeBuoy, User, Plus } from "lucide-react";
 import { NotificationBell } from "@/components/NotificationBell";
 

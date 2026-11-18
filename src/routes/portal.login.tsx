@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, User } from "lucide-react";
 import { lovable } from "@/integrations/lovable";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/portal/login")({
   head: () => ({ meta: [{ title: "Client Portal Login — Firmus Formation" }, { name: "robots", content: "noindex" }] }),

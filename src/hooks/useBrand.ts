@@ -10,16 +10,17 @@ let cache: Promise<Brand> | null = null;
 
 function loadBrand(): Promise<Brand> {
   if (!cache) {
-    cache = supabase
+    const request = Promise.resolve(supabase
       .from("public_brand_settings")
       .select("logo_url, brand_primary")
-      .eq("singleton", true)
-      .maybeSingle()
+      .maybeSingle())
       .then(({ data }) => ({
         logoUrl: (data?.logo_url as string | null) ?? null,
         brandPrimary: (data?.brand_primary as string | null) ?? null,
       }))
       .catch(() => ({ logoUrl: null, brandPrimary: null }) as Brand);
+    cache = request;
+    return request;
   }
   return cache;
 }

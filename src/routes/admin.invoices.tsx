@@ -61,7 +61,7 @@ function InvoicesAdmin() {
           <option value="all">All statuses</option>
           {INVOICE_STATUSES.map((s) => <option key={s} value={s}>{INVOICE_STATUS_LABEL[s]}</option>)}
         </select>
-        <Link to="/admin/invoices/new" className="inline-flex items-center gap-2 rounded-md bg-gradient-gold px-4 py-2 text-sm font-semibold text-gold-foreground shadow-gold">
+        <Link to="/admin/invoices/$id" params={{ id: "new" }} className="inline-flex items-center gap-2 rounded-md bg-gradient-gold px-4 py-2 text-sm font-semibold text-gold-foreground shadow-gold">
           <Plus size={14} /> New Invoice
         </Link>
       </div>
