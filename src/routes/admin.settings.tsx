@@ -13,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { refreshBrandSettings } from "@/hooks/useBrand";
 import {
   Building2, Bell, Shield, Users as UsersIcon, KeyRound, Receipt, Loader2, Save, UserPlus, Trash2, RefreshCw,
 } from "lucide-react";
@@ -112,7 +113,11 @@ function Page() {
     const { error } = await q;
     setSaving(false);
     if (error) toast.error(error.message);
-    else { toast.success("Settings saved"); void loadAll(); }
+    else {
+      await refreshBrandSettings();
+      toast.success("Settings saved");
+      void loadAll();
+    }
   };
 
   const set = <K extends keyof Settings>(k: K, v: Settings[K]) => setSettings((s) => ({ ...s, [k]: v }));

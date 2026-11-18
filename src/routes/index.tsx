@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteShell } from "@/components/SiteShell";
 import heroImg from "@/assets/hero.jpg";
+import shareImage from "@/assets/firmus-og.png.asset.json";
 import {
   Building2, FileBadge, IdCard, ShoppingBag, Search, Boxes,
   Megaphone, ListChecks, Shield, MapPin, Landmark, Calculator,
@@ -15,6 +16,12 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Launch and scale on Amazon with confidence. USA LLC, EIN, seller account, product research, PPC and full A-Z management — done by experts." },
       { property: "og:title", content: "Firmus Formation — Amazon FBA Agency" },
       { property: "og:description", content: "Premium Amazon FBA setup and management for international sellers." },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: `https://firmusformation.lovable.app${shareImage.url}` },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Firmus Formation — Amazon FBA Agency" },
+      { name: "twitter:description", content: "Premium Amazon FBA setup and management for international sellers." },
+      { name: "twitter:image", content: `https://firmusformation.lovable.app${shareImage.url}` },
     ],
   }),
   component: Home,

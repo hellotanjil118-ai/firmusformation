@@ -9,6 +9,8 @@ export const Route = createFileRoute("/testimonials")({
       { name: "description", content: "Real results from Amazon FBA founders served by Firmus Formation across 40+ countries." },
       { property: "og:title", content: "Client Testimonials — Firmus Formation" },
       { property: "og:description", content: "Founders share their results with Firmus Formation." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Testimonials,

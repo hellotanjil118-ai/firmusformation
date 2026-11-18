@@ -54,6 +54,8 @@ function readableDark(hex: string): string | null {
   return "#10123A";
 }
 
+const BRAND_SETTINGS_UPDATED = "firmus-brand-settings-updated";
+
 /** Applies brand_primary as a runtime CSS variable override; falls back to defaults when unset. */
 function applyPrimaryOverride(hex: string | null) {
   const root = document.documentElement;
@@ -61,14 +63,29 @@ function applyPrimaryOverride(hex: string | null) {
     root.style.removeProperty("--primary");
     root.style.removeProperty("--primary-glow");
     root.style.removeProperty("--ring");
+    root.style.removeProperty("--gold");
+    root.style.removeProperty("--accent");
     return;
   }
   const rgb = hexToRgb(hex);
   if (!rgb) return; // invalid value: keep defaults, never break the theme
   const dark = readableDark(hex);
-  root.style.setProperty("--primary", dark!);
-  root.style.setProperty("--primary-glow", hex.trim().startsWith("#") ? hex : `#${hex}`);
-  root.style.setProperty("--ring", hex.trim().startsWith("#") ? hex : `#${hex}`);
+  if (!dark) return;
+  const normalized = hex.trim().startsWith("#") ? hex.trim() : `#${hex.trim()}`;
+  root.style.setProperty("--primary", dark);
+  root.style.setProperty("--primary-glow", dark);
+  root.style.setProperty("--gold", dark);
+  root.style.setProperty("--accent", normalized);
+  root.style.setProperty("--ring", normalized);
+}
+
+/** Reloads the public brand settings after an admin saves them and updates all mounted logos. */
+export async function refreshBrandSettings(): Promise<Brand> {
+  cache = null;
+  const brand = await loadBrand();
+  applyPrimaryOverride(brand.brandPrimary);
+  if (typeof window !== "undefined") window.dispatchEvent(new Event(BRAND_SETTINGS_UPDATED));
+  return brand;
 }
 
 /**
@@ -80,6 +97,14 @@ export function useBrand(): Brand {
 
   useEffect(() => {
     let alive = true;
+    const handleBrandUpdate = () => {
+      void loadBrand().then((b) => {
+        if (!alive) return;
+        setBrand(b);
+        applyPrimaryOverride(b.brandPrimary);
+      });
+    };
+    window.addEventListener(BRAND_SETTINGS_UPDATED, handleBrandUpdate);
     loadBrand().then((b) => {
       if (!alive) return;
       setBrand(b);
@@ -87,6 +112,7 @@ export function useBrand(): Brand {
     });
     return () => {
       alive = false;
+      window.removeEventListener(BRAND_SETTINGS_UPDATED, handleBrandUpdate);
     };
   }, []);
 

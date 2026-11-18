@@ -84,9 +84,9 @@
   --gradient-hero: radial-gradient(ellipse at top right, color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%),
                    radial-gradient(ellipse at bottom left, color-mix(in oklab, var(--primary) 16%, transparent), transparent 55%),
                    linear-gradient(180deg, oklch(0.985 0.006 275), oklch(0.955 0.014 275));
-  --gradient-primary: linear-gradient(135deg, #2536C8, #4B5EF0);
-  --gradient-gold: linear-gradient(135deg, #4B5EF0, #7889F8);
-  --gradient-cta: linear-gradient(135deg, #2536C8 0%, #4B5EF0 55%, #7889F8 130%);
+  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
+  --gradient-gold: linear-gradient(135deg, var(--gold), var(--primary-glow));
+  --gradient-cta: linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 55%, var(--accent) 130%);
 }
 
 @layer base {
@@ -113,7 +113,7 @@
     color: transparent;
   }
   .text-gradient-emerald {
-    background: linear-gradient(135deg, #2536C8, #4B5EF0, #7889F8);
+    background: linear-gradient(135deg, var(--primary), var(--primary-glow), var(--accent));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

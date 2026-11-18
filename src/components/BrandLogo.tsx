@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useBrand } from "@/hooks/useBrand";
 import logoFull from "@/assets/firmus-logo.png.asset.json";
 import logoMark from "@/assets/firmus-mark.png.asset.json";
@@ -16,6 +16,7 @@ type Props = {
 export function BrandLogo({ variant = "full", className }: Props) {
   const brand = useBrand();
   const [broken, setBroken] = useState(false);
+  useEffect(() => setBroken(false), [brand.logoUrl]);
   const fallback = variant === "full" ? logoFull.url : logoMark.url;
   const src = !broken && brand.logoUrl ? brand.logoUrl : fallback;
 

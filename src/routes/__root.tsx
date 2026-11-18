@@ -82,11 +82,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Firmus Formation — Amazon FBA Setup, LLC, EIN & PPC Agency" },
       { name: "twitter:description", content: "Premium Amazon FBA agency. USA LLC formation, EIN, seller account, product research, PPC and full A-Z management for international sellers." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/369f6a68-5094-4f8c-bab7-45503c81859d/id-preview-d8ecba4e--f2ba6186-8710-4843-a038-5e2a53870f93.lovable.app-1778675892337.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/369f6a68-5094-4f8c-bab7-45503c81859d/id-preview-d8ecba4e--f2ba6186-8710-4843-a038-5e2a53870f93.lovable.app-1778675892337.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

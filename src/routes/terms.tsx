@@ -6,6 +6,10 @@ export const Route = createFileRoute("/terms")({
     meta: [
       { title: "Terms & Conditions — Firmus Formation" },
       { name: "description", content: "Terms governing the use of Firmus Formation services and website." },
+      { property: "og:title", content: "Terms & Conditions — Firmus Formation" },
+      { property: "og:description", content: "Terms for Firmus Formation services and website use." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Terms,

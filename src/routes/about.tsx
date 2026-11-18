@@ -9,6 +9,8 @@ export const Route = createFileRoute("/about")({
       { name: "description", content: "Meet the team behind Firmus Formation. We help international entrepreneurs launch and scale on Amazon US, UK and EU." },
       { property: "og:title", content: "About Firmus Formation" },
       { property: "og:description", content: "International Amazon FBA setup and growth specialists." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: About,

@@ -11,6 +11,8 @@ export const Route = createFileRoute("/pricing")({
       { name: "description", content: "Transparent packages for Amazon FBA setup, launch and full management." },
       { property: "og:title", content: "Pricing — Firmus Formation" },
       { property: "og:description", content: "Transparent Amazon FBA agency packages." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Pricing,

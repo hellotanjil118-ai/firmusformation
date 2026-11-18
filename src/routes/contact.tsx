@@ -12,6 +12,8 @@ export const Route = createFileRoute("/contact")({
       { name: "description", content: "Book a free 30-minute Amazon FBA strategy call. WhatsApp, email or contact form — we reply within 24 hours." },
       { property: "og:title", content: "Contact Firmus Formation" },
       { property: "og:description", content: "Book your free Amazon FBA consultation today." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Contact,

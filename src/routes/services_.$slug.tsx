@@ -24,6 +24,9 @@ export const Route = createFileRoute("/services_/$slug")({
         { property: "og:description", content: desc },
         { property: "og:url", content: `https://firmus-launchpad.lovable.app/services/${params.slug}` },
         { property: "og:type", content: "product" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: desc },
       ],
       links: [
         { rel: "canonical", href: `https://firmus-launchpad.lovable.app/services/${params.slug}` },

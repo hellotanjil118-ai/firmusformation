@@ -13,6 +13,8 @@ export const Route = createFileRoute("/services")({
       { name: "description", content: "Full-service Amazon FBA agency: USA LLC, EIN, ITIN, seller account, product research, sourcing, PPC, listings, trademark and automation." },
       { property: "og:title", content: "Amazon FBA Services — Firmus Formation" },
       { property: "og:description", content: "Every service you need to launch and grow on Amazon." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ServicesPage,

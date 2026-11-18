@@ -8,6 +8,8 @@ export const Route = createFileRoute("/blog")({
       { name: "description", content: "Guides on USA LLC, EIN, Amazon seller approval, PPC and product research for international FBA sellers." },
       { property: "og:title", content: "Firmus Formation Blog" },
       { property: "og:description", content: "Insights for international Amazon sellers." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Blog,

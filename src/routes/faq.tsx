@@ -10,6 +10,8 @@ export const Route = createFileRoute("/faq")({
       { name: "description", content: "Answers to the most common questions about USA LLC formation, EIN, Amazon seller account approval and FBA management." },
       { property: "og:title", content: "FAQ — Firmus Formation" },
       { property: "og:description", content: "Common Amazon FBA agency questions answered." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: FAQ,

@@ -6,6 +6,10 @@ export const Route = createFileRoute("/privacy")({
     meta: [
       { title: "Privacy Policy — Firmus Formation" },
       { name: "description", content: "How Firmus Formation collects, uses and protects your personal information." },
+      { property: "og:title", content: "Privacy Policy — Firmus Formation" },
+      { property: "og:description", content: "How Firmus Formation handles and protects your information." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Privacy,
